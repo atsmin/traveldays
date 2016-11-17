@@ -1,0 +1,24 @@
+{
+  "name": "traveldays",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel bundle.js -o compiled.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atsmin/traveldays.git"
+  },
+  "author": "atsmin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/atsmin/traveldays/issues"
+  },
+  "homepage": "https://github.com/atsmin/traveldays#readme",
+  "devDependencies": {
+    "@google/maps": "^0.3.0",
+    "babel-cli": "^6.18.0"
+  }
+}
