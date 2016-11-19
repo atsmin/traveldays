@@ -52,7 +52,7 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	function loadMap(country, cities, paths, zoom) {
+	function loadMap(country, cities, paths, airport, zoom) {
 	  geocodePromise(country).then(function (latlang) {
 	    var mapOptions = {
 	      center: latlang, zoom: zoom,
@@ -60,11 +60,15 @@
 	    };
 	    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-	    // Markers
-	    setMarkers(map, cities).then(function (cityLatLangs) {
+	    // Cities
+	    setCities(map, cities).then(function (cityLatLangs) {
 	      // Paths
 	      setPaths(map, paths, cityLatLangs);
 	    });
+	    // Geocoder don't permit over 10 times request per second!
+	    setTimeout(function () {
+	      return setAirport(map, airport);
+	    }, 1000);
 	  });
 	}
 
@@ -77,7 +81,7 @@
 	  });
 	}
 
-	function setMarkers(map, cities) {
+	function setCities(map, cities) {
 	  var cityLatLangs = [];
 	  var icon = {
 	    url: 'assets/img/Germany.png',
@@ -139,12 +143,29 @@
 	  }
 	}
 
+	function setAirport(map, airport) {
+	  var icon = {
+	    url: 'assets/img/Plane.png',
+	    scaledSize: new google.maps.Size(60, 60), // scaled size
+	    anchor: new google.maps.Point(0, 20)
+	  };
+	  geocodePromise(airport).then(function (latlang) {
+	    new google.maps.Marker({
+	      map: map,
+	      position: latlang,
+	      title: airport,
+	      icon: icon
+	    });
+	  });
+	}
+
 	function main() {
 	  var country = 'Germany';
 	  var cities = ['Munich', 'Fussen', 'Frankfurt', 'Cologne', 'Berlin', 'Potsdam', 'Dresden', 'Meissen', 'Leipzig', 'Nuremberg'];
 	  var paths = [[0, 1], [0, 2], [2, 3], [2, 4], [4, 5], [5, 6], [6, 7], [6, 8], [6, 9], [9, 0]];
+	  var airport = 'Munich Airport';
 	  var zoom = 6;
-	  loadMap(country, cities, paths, zoom);
+	  loadMap(country, cities, paths, airport, zoom);
 	}
 
 	window.onload = main;
