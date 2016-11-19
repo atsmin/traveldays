@@ -7,7 +7,7 @@ export function showSlide(country, city) {
   for (let i = 1; i <= 5; i++) {
     var img = new Image();
     var url = `${IMAGE_DIR}${country}/${city}/${i}.jpg`;
-    if (i === 0) {
+    if (i === 1) {
       img.src = url;
     } else {
       img.dataset.src = url;
