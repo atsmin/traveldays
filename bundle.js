@@ -5980,6 +5980,7 @@
 	  $('#slider').append(images);
 	  var slider = new IdealImageSlider.Slider({
 	    selector: '#slider',
+	    height: 400,
 	    maxHeight: 600
 	  });
 	  slider.start();
