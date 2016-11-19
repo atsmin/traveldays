@@ -5846,7 +5846,7 @@
 	          cityLatLangs.push(latlang);
 	          // Info Window
 	          var infowin = new google.maps.InfoWindow({
-	            content: '\n                <div>\n                  <img src="' + _config.CAMERA_IMAGE + '" style="vertical-align:middle;">\n                  <span style="vertical-align:middle;"><strong>' + cities[i] + '</strong></span>\n                </div>\n              '
+	            content: '\n                <div class="info">\n                  <img src="' + _config.CAMERA_IMAGE + '">\n                  <span><strong>' + cities[i] + '</strong></span>\n                </div>\n              '
 	          });
 	          // mouseover
 	          google.maps.event.addListener(marker, 'mouseover', function () {

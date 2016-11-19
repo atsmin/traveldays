@@ -51,9 +51,9 @@ function setCities(map, cities, country) {
             // Info Window
             var infowin = new google.maps.InfoWindow({
               content: `
-                <div>
-                  <img src="${CAMERA_IMAGE}" style="vertical-align:middle;">
-                  <span style="vertical-align:middle;"><strong>${cities[i]}</strong></span>
+                <div class="info">
+                  <img src="${CAMERA_IMAGE}">
+                  <span><strong>${cities[i]}</strong></span>
                 </div>
               `
             });
