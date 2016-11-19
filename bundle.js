@@ -5981,7 +5981,7 @@
 	  var slider = new IdealImageSlider.Slider({
 	    selector: '#slider',
 	    height: 400,
-	    maxHeight: 600,
+	    maxHeight: 800,
 	    interval: 3000
 	  });
 	  slider.start();
