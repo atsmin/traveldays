@@ -1,6 +1,6 @@
 import async from 'async';
 import { CITY_IMAGE, PLANE_IMAGE, CAMERA_IMAGE } from './config';
-import { show } from './slide';
+import { showSlide } from './slide';
 
 
 export function loadMap(country, cities, paths, airport, zoom) {
@@ -69,7 +69,7 @@ function setCities(map, cities, country) {
             // click
             // show modal for pictures slide
             google.maps.event.addListener(marker, 'click', function() {
-              show(country, city);
+              showSlide(country, city);
             });
 
             next();

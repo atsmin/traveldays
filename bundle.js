@@ -5860,7 +5860,7 @@
 	          // click
 	          // show modal for pictures slide
 	          google.maps.event.addListener(marker, 'click', function () {
-	            (0, _slide.show)(country, city);
+	            (0, _slide.showSlide)(country, city);
 	          });
 
 	          next();
@@ -5959,17 +5959,22 @@
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
-	exports.show = show;
+	exports.showSlide = showSlide;
 
 	var _config = __webpack_require__(7);
 
-	function show(country, city) {
+	function showSlide(country, city) {
 	  var modal = $('[data-remodal-id=modal]').remodal();
 	  modal.open();
 	  var images = [];
 	  for (var i = 1; i <= 5; i++) {
 	    var img = new Image();
-	    img.src = '' + _config.IMAGE_DIR + country + '/' + city + '/' + i + '.jpg';
+	    var url = '' + _config.IMAGE_DIR + country + '/' + city + '/' + i + '.jpg';
+	    if (i === 0) {
+	      img.src = url;
+	    } else {
+	      img.dataset.src = url;
+	    }
 	    images.push(img);
 	  }
 	  $('#slider').append(images);
