@@ -46,129 +46,18 @@
 
 	'use strict';
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _maps = __webpack_require__(6);
 
-	var _jquery = __webpack_require__(1);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	function loadMap(country, cities, paths, airport, zoom) {
-	  geocodePromise(country).then(function (latlang) {
-	    var mapOptions = {
-	      center: latlang, zoom: zoom,
-	      mapTypeId: google.maps.MapTypeId.ROADMAP
-	    };
-	    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-	    // Cities
-	    setCities(map, cities).then(function (cityLatLangs) {
-	      // Paths
-	      setPaths(map, paths, cityLatLangs);
-	    });
-	    // Geocoder don't permit over 10 times request per second!
-	    setTimeout(function () {
-	      return setAirport(map, airport);
-	    }, 1000);
-	  });
-	}
-
-	function geocodePromise(address) {
-	  var geocoder = new google.maps.Geocoder();
-	  return new Promise(function (resolve) {
-	    geocoder.geocode({ address: address }, function (results, status) {
-	      resolve(results[0].geometry.location);
-	    });
-	  });
-	}
-
-	function setCities(map, cities) {
-	  var cityLatLangs = [];
-	  var icon = {
-	    url: 'assets/img/Germany.png',
-	    scaledSize: new google.maps.Size(50, 50) };
-	  // scaled size
-	  var dfd = _jquery2['default'].Deferred();
-	  cities.forEach(function (city, i) {
-	    geocodePromise(city).then(function (latlang) {
-	      new google.maps.Marker({
-	        map: map,
-	        position: latlang,
-	        title: cities[i],
-	        icon: icon
-	      });
-	      cityLatLangs.push(latlang);
-	    });
-	  });
-	  dfd.resolve(cityLatLangs);
-	  return dfd.promise();
-	}
-
-	function setPaths(map, paths, cityLatLangs) {
-	  var lineSymbol = {
-	    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
-	  };
-	  var _iteratorNormalCompletion = true;
-	  var _didIteratorError = false;
-	  var _iteratorError = undefined;
-
-	  try {
-	    for (var _iterator = paths[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	      var path = _step.value;
-
-	      var line = new google.maps.Polyline({
-	        map: map,
-	        path: [cityLatLangs[path[0]], cityLatLangs[path[1]]],
-	        strokeColor: 'red',
-	        strokeOpacity: 0.5,
-	        strokeWeight: 3,
-	        icons: [{
-	          icon: lineSymbol,
-	          offset: '100%'
-	        }]
-	      });
-	    }
-	  } catch (err) {
-	    _didIteratorError = true;
-	    _iteratorError = err;
-	  } finally {
-	    try {
-	      if (!_iteratorNormalCompletion && _iterator['return']) {
-	        _iterator['return']();
-	      }
-	    } finally {
-	      if (_didIteratorError) {
-	        throw _iteratorError;
-	      }
-	    }
-	  }
-	}
-
-	function setAirport(map, airport) {
-	  var icon = {
-	    url: 'assets/img/Plane.png',
-	    scaledSize: new google.maps.Size(60, 60), // scaled size
-	    anchor: new google.maps.Point(0, 20)
-	  };
-	  geocodePromise(airport).then(function (latlang) {
-	    new google.maps.Marker({
-	      map: map,
-	      position: latlang,
-	      title: airport,
-	      icon: icon
-	    });
-	  });
-	}
-
-	function main() {
+	function init() {
 	  var country = 'Germany';
 	  var cities = ['Munich', 'Fussen', 'Frankfurt', 'Cologne', 'Berlin', 'Potsdam', 'Dresden', 'Meissen', 'Leipzig', 'Nuremberg'];
 	  var paths = [[0, 1], [0, 2], [2, 3], [2, 4], [4, 5], [5, 6], [6, 7], [6, 8], [6, 9], [9, 0]];
 	  var airport = 'Munich Airport';
 	  var zoom = 6;
-	  loadMap(country, cities, paths, airport, zoom);
+	  (0, _maps.loadMap)(country, cities, paths, airport, zoom);
 	}
 
-	window.onload = main;
+	window.onload = init;
 
 /***/ },
 /* 1 */
@@ -10395,6 +10284,164 @@
 	return jQuery;
 	} );
 
+
+/***/ },
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.loadMap = loadMap;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _config = __webpack_require__(7);
+
+	function loadMap(country, cities, paths, airport, zoom) {
+	  geocodePromise(country).then(function (latlang) {
+	    var mapOptions = {
+	      center: latlang, zoom: zoom,
+	      mapTypeId: google.maps.MapTypeId.ROADMAP
+	    };
+	    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+	    // Cities
+	    setCities(map, cities).then(function (cityLatLangs) {
+	      setPaths(map, paths, cityLatLangs); // Paths
+	    });
+	    // Geocoder don't permit over 10 times request per second!
+	    window.setTimeout(function () {
+	      return setAirport(map, airport);
+	    }, 1000);
+	  });
+	}
+
+	function geocodePromise(address) {
+	  var geocoder = new google.maps.Geocoder();
+	  return new Promise(function (resolve) {
+	    geocoder.geocode({ address: address }, function (results, status) {
+	      resolve(results[0].geometry.location);
+	    });
+	  });
+	}
+
+	function setCities(map, cities) {
+	  var cityLatLangs = [];
+	  var icon = {
+	    url: _config.CITY_IMAGE,
+	    scaledSize: new google.maps.Size(50, 50) };
+	  // scaled size
+	  var dfd = _jquery2['default'].Deferred();
+	  cities.forEach(function (city, i) {
+	    geocodePromise(city).then(function (latlang) {
+	      var marker = new google.maps.Marker({
+	        map: map,
+	        position: latlang,
+	        title: cities[i],
+	        icon: icon
+	      });
+	      cityLatLangs.push(latlang);
+	      // Info Window
+	      var infowin = new google.maps.InfoWindow({
+	        content: '\n          <div>\n            <img src="' + _config.CAMERA_IMAGE + '" style="vertical-align:middle;">\n            <span style="vertical-align:middle;"><strong>' + cities[i] + '</strong></span>\n          </div>\n        '
+	      });
+	      // mouseover
+	      google.maps.event.addListener(marker, 'mouseover', function () {
+	        infowin.open(map, marker);
+	      });
+	      // mouseout
+	      google.maps.event.addListener(marker, 'mouseout', function () {
+	        infowin.close();
+	      });
+	    });
+	  });
+	  dfd.resolve(cityLatLangs);
+	  return dfd.promise();
+	}
+
+	function setPaths(map, paths, cityLatLangs) {
+	  var lineSymbol = {
+	    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+	  };
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
+
+	  try {
+	    for (var _iterator = paths[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var path = _step.value;
+
+	      var line = new google.maps.Polyline({
+	        map: map,
+	        path: [cityLatLangs[path[0]], cityLatLangs[path[1]]],
+	        strokeColor: 'red',
+	        strokeOpacity: 0.5,
+	        strokeWeight: 3,
+	        icons: [{
+	          icon: lineSymbol,
+	          offset: '100%'
+	        }]
+	      });
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator['return']) {
+	        _iterator['return']();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+	}
+
+	function setAirport(map, airport) {
+	  var icon = {
+	    url: _config.PLANE_IMAGE,
+	    scaledSize: new google.maps.Size(60, 60), // scaled size
+	    anchor: new google.maps.Point(0, 20)
+	  };
+	  geocodePromise(airport).then(function (latlang) {
+	    new google.maps.Marker({
+	      map: map,
+	      position: latlang,
+	      title: airport,
+	      icon: icon
+	    });
+	  });
+	}
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var IMAGE_DIR = 'assets/img/';
+	var CITY_IMAGE = IMAGE_DIR + 'Germany.png';
+	exports.CITY_IMAGE = CITY_IMAGE;
+	var PLANE_IMAGE = IMAGE_DIR + 'Plane.png';
+	exports.PLANE_IMAGE = PLANE_IMAGE;
+	var CAMERA_IMAGE = IMAGE_DIR + 'Camera.png';
+	exports.CAMERA_IMAGE = CAMERA_IMAGE;
 
 /***/ }
 /******/ ]);
