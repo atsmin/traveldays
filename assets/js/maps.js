@@ -1,5 +1,6 @@
-import $ from 'jquery';
+import async from 'async';
 import {CITY_IMAGE, PLANE_IMAGE, CAMERA_IMAGE} from './config';
+
 
 export function loadMap(country, cities, paths, airport, zoom) {
   geocodePromise(country).then((latlang) => {
@@ -34,37 +35,46 @@ function setCities(map, cities) {
       url: CITY_IMAGE,
       scaledSize: new google.maps.Size(50, 50), // scaled size
   };
-  var dfd = $.Deferred();
-  cities.forEach((city, i) => {
-    geocodePromise(city).then((latlang) => {
-      var marker = new google.maps.Marker({
-        map: map,
-        position: latlang,
-        title: cities[i],
-        icon: icon
-      });
-      cityLatLangs.push(latlang);
-      // Info Window
-      var infowin = new google.maps.InfoWindow({
-        content: `
-          <div>
-            <img src="${CAMERA_IMAGE}" style="vertical-align:middle;">
-            <span style="vertical-align:middle;"><strong>${cities[i]}</strong></span>
-          </div>
-        `
-      });
-      // mouseover
-      google.maps.event.addListener(marker, 'mouseover', function(){
-          infowin.open(map, marker);
-      });
-      // mouseout
-      google.maps.event.addListener(marker, 'mouseout', function(){
-          infowin.close();
-      });
-    });
+  return new Promise((resolve) => {
+    async.waterfall([
+      function(callback){
+        async.forEachOfSeries(cities, (city, i, next) => {
+          geocodePromise(city).then((latlang) => {
+            var marker = new google.maps.Marker({
+              map: map,
+              position: latlang,
+              title: cities[i],
+              icon: icon
+            });
+            cityLatLangs.push(latlang);
+            // Info Window
+            var infowin = new google.maps.InfoWindow({
+              content: `
+                <div>
+                  <img src="${CAMERA_IMAGE}" style="vertical-align:middle;">
+                  <span style="vertical-align:middle;"><strong>${cities[i]}</strong></span>
+                </div>
+              `
+            });
+            // mouseover
+            google.maps.event.addListener(marker, 'mouseover', function(){
+                infowin.open(map, marker);
+            });
+            // mouseout
+            google.maps.event.addListener(marker, 'mouseout', function(){
+                infowin.close();
+            });
+            next();
+            // callback must be fired when all geocode done
+            if (i === cities.length - 1) {
+              callback();
+            }
+          });
+        });
+      },
+      (callback) => { resolve(cityLatLangs); callback(); }
+    ]);
   });
-  dfd.resolve(cityLatLangs);
-  return dfd.promise();
 }
 
 function setPaths(map, paths, cityLatLangs) {
