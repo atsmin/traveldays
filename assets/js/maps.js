@@ -1,5 +1,6 @@
 import async from 'async';
-import {CITY_IMAGE, PLANE_IMAGE, CAMERA_IMAGE} from './config';
+import { CITY_IMAGE, PLANE_IMAGE, CAMERA_IMAGE } from './config';
+import { show } from './slide';
 
 
 export function loadMap(country, cities, paths, airport, zoom) {
@@ -11,7 +12,7 @@ export function loadMap(country, cities, paths, airport, zoom) {
     var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
     // Cities
-    setCities(map, cities)
+    setCities(map, cities, country)
     .then((cityLatLangs) => {
       setPaths(map, paths, cityLatLangs); // Paths
     });
@@ -29,7 +30,7 @@ function geocodePromise(address) {
   });
 }
 
-function setCities(map, cities) {
+function setCities(map, cities, country) {
   var cityLatLangs = [];
   var icon = {
       url: CITY_IMAGE,
@@ -57,13 +58,20 @@ function setCities(map, cities) {
               `
             });
             // mouseover
-            google.maps.event.addListener(marker, 'mouseover', function(){
+            google.maps.event.addListener(marker, 'mouseover', function() {
                 infowin.open(map, marker);
             });
             // mouseout
-            google.maps.event.addListener(marker, 'mouseout', function(){
+            google.maps.event.addListener(marker, 'mouseout', function() {
                 infowin.close();
             });
+
+            // click
+            // show modal for pictures slide
+            google.maps.event.addListener(marker, 'click', function() {
+              show(country, city);
+            });
+
             next();
             // callback must be fired when all geocode done
             if (i === cities.length - 1) {

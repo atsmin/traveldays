@@ -5797,6 +5797,8 @@
 
 	var _config = __webpack_require__(7);
 
+	var _slide = __webpack_require__(8);
+
 	function loadMap(country, cities, paths, airport, zoom) {
 	  geocodePromise(country).then(function (latlang) {
 	    var mapOptions = {
@@ -5806,7 +5808,7 @@
 	    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
 	    // Cities
-	    setCities(map, cities).then(function (cityLatLangs) {
+	    setCities(map, cities, country).then(function (cityLatLangs) {
 	      setPaths(map, paths, cityLatLangs); // Paths
 	    });
 	    // Geocoder don't permit over 10 times request per second!
@@ -5825,7 +5827,7 @@
 	  });
 	}
 
-	function setCities(map, cities) {
+	function setCities(map, cities, country) {
 	  var cityLatLangs = [];
 	  var icon = {
 	    url: _config.CITY_IMAGE,
@@ -5854,6 +5856,13 @@
 	          google.maps.event.addListener(marker, 'mouseout', function () {
 	            infowin.close();
 	          });
+
+	          // click
+	          // show modal for pictures slide
+	          google.maps.event.addListener(marker, 'click', function () {
+	            (0, _slide.show)(country, city);
+	          });
+
 	          next();
 	          // callback must be fired when all geocode done
 	          if (i === cities.length - 1) {
@@ -5933,12 +5942,43 @@
 	  value: true
 	});
 	var IMAGE_DIR = 'assets/img/';
+	exports.IMAGE_DIR = IMAGE_DIR;
 	var CITY_IMAGE = IMAGE_DIR + 'Germany.png';
 	exports.CITY_IMAGE = CITY_IMAGE;
 	var PLANE_IMAGE = IMAGE_DIR + 'Plane.png';
 	exports.PLANE_IMAGE = PLANE_IMAGE;
 	var CAMERA_IMAGE = IMAGE_DIR + 'Camera.png';
 	exports.CAMERA_IMAGE = CAMERA_IMAGE;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.show = show;
+
+	var _config = __webpack_require__(7);
+
+	function show(country, city) {
+	  var modal = $('[data-remodal-id=modal]').remodal();
+	  modal.open();
+	  var images = [];
+	  for (var i = 1; i <= 5; i++) {
+	    var img = new Image();
+	    img.src = '' + _config.IMAGE_DIR + country + '/' + city + '/' + i + '.jpg';
+	    images.push(img);
+	  }
+	  $('#slider').append(images);
+	  var slider = new IdealImageSlider.Slider({
+	    selector: '#slider',
+	    maxHeight: 600
+	  });
+	  slider.start();
+	}
 
 /***/ }
 /******/ ]);
