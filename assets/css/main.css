@@ -7,6 +7,10 @@
   background-image: url('../img/Germany/background.jpg');
 }
 
+#header {
+  color: red
+}
+
 #map {
   width: 60%;
   height:80%;
