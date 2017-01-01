@@ -100,8 +100,9 @@
 	}
 
 	function geocodePromise(address) {
+	  var cached = null;
 	  if (typeof Storage !== "undefined") {
-	    var cached = JSON.parse(window.localStorage.getItem(address));
+	    cached = JSON.parse(window.localStorage.getItem(address));
 	  }
 	  var geocoder = new google.maps.Geocoder();
 	  return new Promise(function (resolve) {
@@ -126,7 +127,7 @@
 	  return new Promise(function (resolve) {
 	    _async2['default'].waterfall([function (callback) {
 	      _async2['default'].forEachOfSeries(cities, function (city, i, next) {
-	        geocodePromise(city).then(function (latlang) {
+	        geocodePromise(city + ',' + country).then(function (latlang) {
 	          var marker = new google.maps.Marker({
 	            map: map,
 	            position: latlang,

@@ -50,7 +50,7 @@ function setCities(map, cities, country) {
     async.waterfall([
       function(callback){
         async.forEachOfSeries(cities, (city, i, next) => {
-          geocodePromise(city).then((latlang) => {
+          geocodePromise(`${city},${country}`).then((latlang) => {
             var marker = new google.maps.Marker({
               map: map,
               position: latlang,
