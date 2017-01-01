@@ -9,6 +9,6 @@
             "type": "chrome",
             "request": "launch",
             "file": "${workspaceRoot}/index.html"
-        },
+        }
     ]
 }
