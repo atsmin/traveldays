@@ -22,11 +22,21 @@ export function loadMap(country, cities, paths, airport, zoom) {
 }
 
 function geocodePromise(address) {
+  var cached = null;
+  if (typeof(Storage) !== "undefined") {
+    cached = JSON.parse(window.localStorage.getItem(address));
+  }
   var geocoder = new google.maps.Geocoder();
   return new Promise((resolve) => {
-    geocoder.geocode({address : address}, (results, status) => {
-      resolve(results[0].geometry.location);
-    });
+    if (cached === null) {
+      geocoder.geocode({address : address}, (results, status) => {
+        let latlang = results[0].geometry.location;
+        window.localStorage.setItem(address, JSON.stringify(latlang));
+        resolve(latlang);
+      });
+    } else {
+        resolve(cached);
+    }
   });
 }
 

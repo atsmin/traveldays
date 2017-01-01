@@ -46,7 +46,7 @@
 
 	'use strict';
 
-	var _maps = __webpack_require__(6);
+	var _maps = __webpack_require__(1);
 
 	function init() {
 	  var country = 'Germany';
@@ -60,7 +60,169 @@
 	window.onload = init;
 
 /***/ },
-/* 1 */,
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.loadMap = loadMap;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _async = __webpack_require__(2);
+
+	var _async2 = _interopRequireDefault(_async);
+
+	var _config = __webpack_require__(6);
+
+	var _slide = __webpack_require__(7);
+
+	function loadMap(country, cities, paths, airport, zoom) {
+	  geocodePromise(country).then(function (latlang) {
+	    var mapOptions = {
+	      center: latlang, zoom: zoom,
+	      mapTypeId: google.maps.MapTypeId.ROADMAP
+	    };
+	    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+	    // Cities
+	    setCities(map, cities, country).then(function (cityLatLangs) {
+	      setPaths(map, paths, cityLatLangs); // Paths
+	    });
+	    // Geocoder don't permit over 10 times request per second!
+	    window.setTimeout(function () {
+	      return setAirport(map, airport);
+	    }, 1000);
+	  });
+	}
+
+	function geocodePromise(address) {
+	  if (typeof Storage !== "undefined") {
+	    var cached = JSON.parse(window.localStorage.getItem(address));
+	  }
+	  var geocoder = new google.maps.Geocoder();
+	  return new Promise(function (resolve) {
+	    if (cached === null) {
+	      geocoder.geocode({ address: address }, function (results, status) {
+	        var latlang = results[0].geometry.location;
+	        window.localStorage.setItem(address, JSON.stringify(latlang));
+	        resolve(latlang);
+	      });
+	    } else {
+	      resolve(cached);
+	    }
+	  });
+	}
+
+	function setCities(map, cities, country) {
+	  var cityLatLangs = [];
+	  var icon = {
+	    url: _config.CITY_IMAGE,
+	    scaledSize: new google.maps.Size(50, 50) };
+	  // scaled size
+	  return new Promise(function (resolve) {
+	    _async2['default'].waterfall([function (callback) {
+	      _async2['default'].forEachOfSeries(cities, function (city, i, next) {
+	        geocodePromise(city).then(function (latlang) {
+	          var marker = new google.maps.Marker({
+	            map: map,
+	            position: latlang,
+	            title: cities[i],
+	            icon: icon
+	          });
+	          cityLatLangs.push(latlang);
+	          // Info Window
+	          var infowin = new google.maps.InfoWindow({
+	            content: '\n                <div class="info">\n                  <img src="' + _config.CAMERA_IMAGE + '">\n                  <span><strong>' + cities[i] + '</strong></span>\n                </div>\n              '
+	          });
+	          // mouseover
+	          google.maps.event.addListener(marker, 'mouseover', function () {
+	            infowin.open(map, marker);
+	          });
+	          // mouseout
+	          google.maps.event.addListener(marker, 'mouseout', function () {
+	            infowin.close();
+	          });
+
+	          // click
+	          // show modal for pictures slide
+	          google.maps.event.addListener(marker, 'click', function () {
+	            (0, _slide.showSlide)(country, city);
+	          });
+
+	          next();
+	          // callback must be fired when all geocode done
+	          if (i === cities.length - 1) {
+	            callback();
+	          }
+	        });
+	      });
+	    }, function (callback) {
+	      resolve(cityLatLangs);callback();
+	    }]);
+	  });
+	}
+
+	function setPaths(map, paths, cityLatLangs) {
+	  var lineSymbol = {
+	    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+	  };
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
+
+	  try {
+	    for (var _iterator = paths[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var path = _step.value;
+
+	      var line = new google.maps.Polyline({
+	        map: map,
+	        path: [cityLatLangs[path[0]], cityLatLangs[path[1]]],
+	        strokeColor: 'red',
+	        strokeOpacity: 0.5,
+	        strokeWeight: 3,
+	        icons: [{
+	          icon: lineSymbol,
+	          offset: '100%'
+	        }]
+	      });
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator['return']) {
+	        _iterator['return']();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+	}
+
+	function setAirport(map, airport) {
+	  var icon = {
+	    url: _config.PLANE_IMAGE,
+	    scaledSize: new google.maps.Size(60, 60), // scaled size
+	    anchor: new google.maps.Point(0, 20)
+	  };
+	  geocodePromise(airport).then(function (latlang) {
+	    new google.maps.Marker({
+	      map: map,
+	      position: latlang,
+	      title: airport,
+	      icon: icon
+	    });
+	  });
+	}
+
+/***/ },
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -5780,160 +5942,6 @@
 
 /***/ },
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports.loadMap = loadMap;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _async = __webpack_require__(2);
-
-	var _async2 = _interopRequireDefault(_async);
-
-	var _config = __webpack_require__(7);
-
-	var _slide = __webpack_require__(8);
-
-	function loadMap(country, cities, paths, airport, zoom) {
-	  geocodePromise(country).then(function (latlang) {
-	    var mapOptions = {
-	      center: latlang, zoom: zoom,
-	      mapTypeId: google.maps.MapTypeId.ROADMAP
-	    };
-	    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-	    // Cities
-	    setCities(map, cities, country).then(function (cityLatLangs) {
-	      setPaths(map, paths, cityLatLangs); // Paths
-	    });
-	    // Geocoder don't permit over 10 times request per second!
-	    window.setTimeout(function () {
-	      return setAirport(map, airport);
-	    }, 1000);
-	  });
-	}
-
-	function geocodePromise(address) {
-	  var geocoder = new google.maps.Geocoder();
-	  return new Promise(function (resolve) {
-	    geocoder.geocode({ address: address }, function (results, status) {
-	      resolve(results[0].geometry.location);
-	    });
-	  });
-	}
-
-	function setCities(map, cities, country) {
-	  var cityLatLangs = [];
-	  var icon = {
-	    url: _config.CITY_IMAGE,
-	    scaledSize: new google.maps.Size(50, 50) };
-	  // scaled size
-	  return new Promise(function (resolve) {
-	    _async2['default'].waterfall([function (callback) {
-	      _async2['default'].forEachOfSeries(cities, function (city, i, next) {
-	        geocodePromise(city).then(function (latlang) {
-	          var marker = new google.maps.Marker({
-	            map: map,
-	            position: latlang,
-	            title: cities[i],
-	            icon: icon
-	          });
-	          cityLatLangs.push(latlang);
-	          // Info Window
-	          var infowin = new google.maps.InfoWindow({
-	            content: '\n                <div class="info">\n                  <img src="' + _config.CAMERA_IMAGE + '">\n                  <span><strong>' + cities[i] + '</strong></span>\n                </div>\n              '
-	          });
-	          // mouseover
-	          google.maps.event.addListener(marker, 'mouseover', function () {
-	            infowin.open(map, marker);
-	          });
-	          // mouseout
-	          google.maps.event.addListener(marker, 'mouseout', function () {
-	            infowin.close();
-	          });
-
-	          // click
-	          // show modal for pictures slide
-	          google.maps.event.addListener(marker, 'click', function () {
-	            (0, _slide.showSlide)(country, city);
-	          });
-
-	          next();
-	          // callback must be fired when all geocode done
-	          if (i === cities.length - 1) {
-	            callback();
-	          }
-	        });
-	      });
-	    }, function (callback) {
-	      resolve(cityLatLangs);callback();
-	    }]);
-	  });
-	}
-
-	function setPaths(map, paths, cityLatLangs) {
-	  var lineSymbol = {
-	    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
-	  };
-	  var _iteratorNormalCompletion = true;
-	  var _didIteratorError = false;
-	  var _iteratorError = undefined;
-
-	  try {
-	    for (var _iterator = paths[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	      var path = _step.value;
-
-	      var line = new google.maps.Polyline({
-	        map: map,
-	        path: [cityLatLangs[path[0]], cityLatLangs[path[1]]],
-	        strokeColor: 'red',
-	        strokeOpacity: 0.5,
-	        strokeWeight: 3,
-	        icons: [{
-	          icon: lineSymbol,
-	          offset: '100%'
-	        }]
-	      });
-	    }
-	  } catch (err) {
-	    _didIteratorError = true;
-	    _iteratorError = err;
-	  } finally {
-	    try {
-	      if (!_iteratorNormalCompletion && _iterator['return']) {
-	        _iterator['return']();
-	      }
-	    } finally {
-	      if (_didIteratorError) {
-	        throw _iteratorError;
-	      }
-	    }
-	  }
-	}
-
-	function setAirport(map, airport) {
-	  var icon = {
-	    url: _config.PLANE_IMAGE,
-	    scaledSize: new google.maps.Size(60, 60), // scaled size
-	    anchor: new google.maps.Point(0, 20)
-	  };
-	  geocodePromise(airport).then(function (latlang) {
-	    new google.maps.Marker({
-	      map: map,
-	      position: latlang,
-	      title: airport,
-	      icon: icon
-	    });
-	  });
-	}
-
-/***/ },
-/* 7 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5951,7 +5959,7 @@
 	exports.CAMERA_IMAGE = CAMERA_IMAGE;
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5961,7 +5969,7 @@
 	});
 	exports.showSlide = showSlide;
 
-	var _config = __webpack_require__(7);
+	var _config = __webpack_require__(6);
 
 	function showSlide(country, city) {
 	  var modal = $('[data-remodal-id=modal]').remodal();
