@@ -7,8 +7,11 @@
         {
             "type": "chrome",
             "request": "launch",
+            "webRoot": "${workspaceRoot}",
             "file": "${workspaceRoot}/index.html",
-            "name": "Launch Program"
+            "name": "Launch Program",
+            "sourceMaps": true,
+            "smartStep": true
         }
     ]
 }

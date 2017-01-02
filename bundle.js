@@ -1,53 +1,56 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/*!**************************!*\
+  !*** ./assets/js/app.js ***!
+  \**************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
-	var _maps = __webpack_require__(1);
-
+	
+	var _maps = __webpack_require__(/*! ./maps */ 1);
+	
 	function init() {
 	  var country = 'Germany';
 	  var cities = ['Munich', 'Fussen', 'Frankfurt', 'Cologne', 'Berlin', 'Potsdam', 'Dresden', 'Meissen', 'Leipzig', 'Nuremberg'];
@@ -56,30 +59,33 @@
 	  var zoom = 6;
 	  (0, _maps.loadMap)(country, cities, paths, airport, zoom);
 	}
-
+	
 	window.onload = init;
 
 /***/ },
 /* 1 */
+/*!***************************!*\
+  !*** ./assets/js/maps.js ***!
+  \***************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 	exports.loadMap = loadMap;
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _async = __webpack_require__(2);
-
+	
+	var _async = __webpack_require__(/*! async */ 2);
+	
 	var _async2 = _interopRequireDefault(_async);
-
-	var _config = __webpack_require__(6);
-
-	var _slide = __webpack_require__(7);
-
+	
+	var _config = __webpack_require__(/*! ./config */ 6);
+	
+	var _slide = __webpack_require__(/*! ./slide */ 7);
+	
 	function loadMap(country, cities, paths, airport, zoom) {
 	  geocodePromise(country).then(function (latlang) {
 	    var mapOptions = {
@@ -87,7 +93,7 @@
 	      mapTypeId: google.maps.MapTypeId.ROADMAP
 	    };
 	    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
+	
 	    // Cities
 	    setCities(map, cities, country).then(function (cityLatLangs) {
 	      setPaths(map, paths, cityLatLangs); // Paths
@@ -98,7 +104,7 @@
 	    }, 1000);
 	  });
 	}
-
+	
 	function geocodePromise(address) {
 	  var cached = null;
 	  if (typeof Storage !== "undefined") {
@@ -117,7 +123,7 @@
 	    }
 	  });
 	}
-
+	
 	function setCities(map, cities, country) {
 	  var cityLatLangs = [];
 	  var icon = {
@@ -147,13 +153,13 @@
 	          google.maps.event.addListener(marker, 'mouseout', function () {
 	            infowin.close();
 	          });
-
+	
 	          // click
 	          // show modal for pictures slide
 	          google.maps.event.addListener(marker, 'click', function () {
 	            (0, _slide.showSlide)(country, city);
 	          });
-
+	
 	          next();
 	          // callback must be fired when all geocode done
 	          if (i === cities.length - 1) {
@@ -166,7 +172,7 @@
 	    }]);
 	  });
 	}
-
+	
 	function setPaths(map, paths, cityLatLangs) {
 	  var lineSymbol = {
 	    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
@@ -174,11 +180,11 @@
 	  var _iteratorNormalCompletion = true;
 	  var _didIteratorError = false;
 	  var _iteratorError = undefined;
-
+	
 	  try {
 	    for (var _iterator = paths[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	      var path = _step.value;
-
+	
 	      var line = new google.maps.Polyline({
 	        map: map,
 	        path: [cityLatLangs[path[0]], cityLatLangs[path[1]]],
@@ -206,7 +212,7 @@
 	    }
 	  }
 	}
-
+	
 	function setAirport(map, airport) {
 	  var icon = {
 	    url: _config.PLANE_IMAGE,
@@ -225,6 +231,9 @@
 
 /***/ },
 /* 2 */
+/*!*******************************!*\
+  !*** ./~/async/dist/async.js ***!
+  \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, module, setImmediate, process) {(function (global, factory) {
@@ -232,7 +241,7 @@
 	    typeof define === 'function' && define.amd ? define(['exports'], factory) :
 	    (factory((global.async = global.async || {})));
 	}(this, (function (exports) { 'use strict';
-
+	
 	/**
 	 * This method returns the first argument it receives.
 	 *
@@ -252,7 +261,7 @@
 	function identity(value) {
 	  return value;
 	}
-
+	
 	/**
 	 * A faster alternative to `Function#apply`, this function invokes `func`
 	 * with the `this` binding of `thisArg` and the arguments of `args`.
@@ -272,10 +281,10 @@
 	  }
 	  return func.apply(thisArg, args);
 	}
-
+	
 	/* Built-in method references for those with the same name as other `lodash` methods. */
 	var nativeMax = Math.max;
-
+	
 	/**
 	 * A specialized version of `baseRest` which transforms the rest array.
 	 *
@@ -292,7 +301,7 @@
 	        index = -1,
 	        length = nativeMax(args.length - start, 0),
 	        array = Array(length);
-
+	
 	    while (++index < length) {
 	      array[index] = args[start + index];
 	    }
@@ -305,7 +314,7 @@
 	    return apply(func, this, otherArgs);
 	  };
 	}
-
+	
 	/**
 	 * Creates a function that returns `value`.
 	 *
@@ -330,7 +339,7 @@
 	    return value;
 	  };
 	}
-
+	
 	/**
 	 * Checks if `value` is the
 	 * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
@@ -360,22 +369,22 @@
 	  var type = typeof value;
 	  return value != null && (type == 'object' || type == 'function');
 	}
-
+	
 	/** `Object#toString` result references. */
 	var funcTag = '[object Function]';
 	var genTag = '[object GeneratorFunction]';
 	var proxyTag = '[object Proxy]';
-
+	
 	/** Used for built-in method references. */
 	var objectProto$1 = Object.prototype;
-
+	
 	/**
 	 * Used to resolve the
 	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
 	 * of values.
 	 */
 	var objectToString = objectProto$1.toString;
-
+	
 	/**
 	 * Checks if `value` is classified as a `Function` object.
 	 *
@@ -399,25 +408,25 @@
 	  var tag = isObject(value) ? objectToString.call(value) : '';
 	  return tag == funcTag || tag == genTag || tag == proxyTag;
 	}
-
+	
 	/** Detect free variable `global` from Node.js. */
 	var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
-
+	
 	/** Detect free variable `self`. */
 	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
+	
 	/** Used as a reference to the global object. */
 	var root = freeGlobal || freeSelf || Function('return this')();
-
+	
 	/** Used to detect overreaching core-js shims. */
 	var coreJsData = root['__core-js_shared__'];
-
+	
 	/** Used to detect methods masquerading as native. */
 	var maskSrcKey = (function() {
 	  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
 	  return uid ? ('Symbol(src)_1.' + uid) : '';
 	}());
-
+	
 	/**
 	 * Checks if `func` has its source masked.
 	 *
@@ -428,13 +437,13 @@
 	function isMasked(func) {
 	  return !!maskSrcKey && (maskSrcKey in func);
 	}
-
+	
 	/** Used for built-in method references. */
 	var funcProto$1 = Function.prototype;
-
+	
 	/** Used to resolve the decompiled source of functions. */
 	var funcToString$1 = funcProto$1.toString;
-
+	
 	/**
 	 * Converts `func` to its source code.
 	 *
@@ -453,32 +462,32 @@
 	  }
 	  return '';
 	}
-
+	
 	/**
 	 * Used to match `RegExp`
 	 * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
 	 */
 	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
-
+	
 	/** Used to detect host constructors (Safari). */
 	var reIsHostCtor = /^\[object .+?Constructor\]$/;
-
+	
 	/** Used for built-in method references. */
 	var funcProto = Function.prototype;
 	var objectProto = Object.prototype;
-
+	
 	/** Used to resolve the decompiled source of functions. */
 	var funcToString = funcProto.toString;
-
+	
 	/** Used to check objects for own properties. */
 	var hasOwnProperty = objectProto.hasOwnProperty;
-
+	
 	/** Used to detect if a method is native. */
 	var reIsNative = RegExp('^' +
 	  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
 	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
 	);
-
+	
 	/**
 	 * The base implementation of `_.isNative` without bad shim checks.
 	 *
@@ -494,7 +503,7 @@
 	  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
 	  return pattern.test(toSource(value));
 	}
-
+	
 	/**
 	 * Gets the value at `key` of `object`.
 	 *
@@ -506,7 +515,7 @@
 	function getValue(object, key) {
 	  return object == null ? undefined : object[key];
 	}
-
+	
 	/**
 	 * Gets the native function at `key` of `object`.
 	 *
@@ -519,7 +528,7 @@
 	  var value = getValue(object, key);
 	  return baseIsNative(value) ? value : undefined;
 	}
-
+	
 	var defineProperty = (function() {
 	  try {
 	    var func = getNative(Object, 'defineProperty');
@@ -527,7 +536,7 @@
 	    return func;
 	  } catch (e) {}
 	}());
-
+	
 	/**
 	 * The base implementation of `setToString` without support for hot loop shorting.
 	 *
@@ -544,14 +553,14 @@
 	    'writable': true
 	  });
 	};
-
+	
 	/** Used to detect hot functions by number of calls within a span of milliseconds. */
 	var HOT_COUNT = 500;
 	var HOT_SPAN = 16;
-
+	
 	/* Built-in method references for those with the same name as other `lodash` methods. */
 	var nativeNow = Date.now;
-
+	
 	/**
 	 * Creates a function that'll short out and invoke `identity` instead
 	 * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`
@@ -564,11 +573,11 @@
 	function shortOut(func) {
 	  var count = 0,
 	      lastCalled = 0;
-
+	
 	  return function() {
 	    var stamp = nativeNow(),
 	        remaining = HOT_SPAN - (stamp - lastCalled);
-
+	
 	    lastCalled = stamp;
 	    if (remaining > 0) {
 	      if (++count >= HOT_COUNT) {
@@ -580,7 +589,7 @@
 	    return func.apply(undefined, arguments);
 	  };
 	}
-
+	
 	/**
 	 * Sets the `toString` method of `func` to return `string`.
 	 *
@@ -590,7 +599,7 @@
 	 * @returns {Function} Returns `func`.
 	 */
 	var setToString = shortOut(baseSetToString);
-
+	
 	/**
 	 * The base implementation of `_.rest` which doesn't validate or coerce arguments.
 	 *
@@ -602,14 +611,14 @@
 	function baseRest$1(func, start) {
 	  return setToString(overRest(func, start, identity), func + '');
 	}
-
+	
 	var initialParams = function (fn) {
 	    return baseRest$1(function (args /*..., callback*/) {
 	        var callback = args.pop();
 	        fn.call(this, args, callback);
 	    });
 	};
-
+	
 	function applyEach$1(eachfn) {
 	    return baseRest$1(function (fns, args) {
 	        var go = initialParams(function (args, callback) {
@@ -625,10 +634,10 @@
 	        }
 	    });
 	}
-
+	
 	/** Used as references for various `Number` constants. */
 	var MAX_SAFE_INTEGER = 9007199254740991;
-
+	
 	/**
 	 * Checks if `value` is a valid array-like length.
 	 *
@@ -659,7 +668,7 @@
 	  return typeof value == 'number' &&
 	    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
 	}
-
+	
 	/**
 	 * Checks if `value` is array-like. A value is considered array-like if it's
 	 * not a function and has a `value.length` that's an integer greater than or
@@ -688,7 +697,7 @@
 	function isArrayLike(value) {
 	  return value != null && isLength(value.length) && !isFunction(value);
 	}
-
+	
 	/**
 	 * This method returns `undefined`.
 	 *
@@ -704,7 +713,7 @@
 	function noop() {
 	  // No operation performed.
 	}
-
+	
 	function once(fn) {
 	    return function () {
 	        if (fn === null) return;
@@ -713,13 +722,13 @@
 	        callFn.apply(this, arguments);
 	    };
 	}
-
+	
 	var iteratorSymbol = typeof Symbol === 'function' && Symbol.iterator;
-
+	
 	var getIterator = function (coll) {
 	    return iteratorSymbol && coll[iteratorSymbol] && coll[iteratorSymbol]();
 	};
-
+	
 	/**
 	 * The base implementation of `_.times` without support for iteratee shorthands
 	 * or max array length checks.
@@ -732,13 +741,13 @@
 	function baseTimes(n, iteratee) {
 	  var index = -1,
 	      result = Array(n);
-
+	
 	  while (++index < n) {
 	    result[index] = iteratee(index);
 	  }
 	  return result;
 	}
-
+	
 	/**
 	 * Checks if `value` is object-like. A value is object-like if it's not `null`
 	 * and has a `typeof` result of "object".
@@ -766,20 +775,20 @@
 	function isObjectLike(value) {
 	  return value != null && typeof value == 'object';
 	}
-
+	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]';
-
+	
 	/** Used for built-in method references. */
 	var objectProto$4 = Object.prototype;
-
+	
 	/**
 	 * Used to resolve the
 	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
 	 * of values.
 	 */
 	var objectToString$1 = objectProto$4.toString;
-
+	
 	/**
 	 * The base implementation of `_.isArguments`.
 	 *
@@ -790,16 +799,16 @@
 	function baseIsArguments(value) {
 	  return isObjectLike(value) && objectToString$1.call(value) == argsTag;
 	}
-
+	
 	/** Used for built-in method references. */
 	var objectProto$3 = Object.prototype;
-
+	
 	/** Used to check objects for own properties. */
 	var hasOwnProperty$2 = objectProto$3.hasOwnProperty;
-
+	
 	/** Built-in value references. */
 	var propertyIsEnumerable = objectProto$3.propertyIsEnumerable;
-
+	
 	/**
 	 * Checks if `value` is likely an `arguments` object.
 	 *
@@ -822,7 +831,7 @@
 	  return isObjectLike(value) && hasOwnProperty$2.call(value, 'callee') &&
 	    !propertyIsEnumerable.call(value, 'callee');
 	};
-
+	
 	/**
 	 * Checks if `value` is classified as an `Array` object.
 	 *
@@ -847,7 +856,7 @@
 	 * // => false
 	 */
 	var isArray = Array.isArray;
-
+	
 	/**
 	 * This method returns `false`.
 	 *
@@ -864,22 +873,22 @@
 	function stubFalse() {
 	  return false;
 	}
-
+	
 	/** Detect free variable `exports`. */
 	var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
-
+	
 	/** Detect free variable `module`. */
 	var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
-
+	
 	/** Detect the popular CommonJS extension `module.exports`. */
 	var moduleExports = freeModule && freeModule.exports === freeExports;
-
+	
 	/** Built-in value references. */
 	var Buffer = moduleExports ? root.Buffer : undefined;
-
+	
 	/* Built-in method references for those with the same name as other `lodash` methods. */
 	var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
-
+	
 	/**
 	 * Checks if `value` is a buffer.
 	 *
@@ -898,13 +907,13 @@
 	 * // => false
 	 */
 	var isBuffer = nativeIsBuffer || stubFalse;
-
+	
 	/** Used as references for various `Number` constants. */
 	var MAX_SAFE_INTEGER$1 = 9007199254740991;
-
+	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^(?:0|[1-9]\d*)$/;
-
+	
 	/**
 	 * Checks if `value` is a valid array-like index.
 	 *
@@ -919,7 +928,7 @@
 	    (typeof value == 'number' || reIsUint.test(value)) &&
 	    (value > -1 && value % 1 == 0 && value < length);
 	}
-
+	
 	/** `Object#toString` result references. */
 	var argsTag$1 = '[object Arguments]';
 	var arrayTag = '[object Array]';
@@ -934,7 +943,7 @@
 	var setTag = '[object Set]';
 	var stringTag = '[object String]';
 	var weakMapTag = '[object WeakMap]';
-
+	
 	var arrayBufferTag = '[object ArrayBuffer]';
 	var dataViewTag = '[object DataView]';
 	var float32Tag = '[object Float32Array]';
@@ -946,7 +955,7 @@
 	var uint8ClampedTag = '[object Uint8ClampedArray]';
 	var uint16Tag = '[object Uint16Array]';
 	var uint32Tag = '[object Uint32Array]';
-
+	
 	/** Used to identify `toStringTag` values of typed arrays. */
 	var typedArrayTags = {};
 	typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
@@ -962,17 +971,17 @@
 	typedArrayTags[objectTag] = typedArrayTags[regexpTag] =
 	typedArrayTags[setTag] = typedArrayTags[stringTag] =
 	typedArrayTags[weakMapTag] = false;
-
+	
 	/** Used for built-in method references. */
 	var objectProto$5 = Object.prototype;
-
+	
 	/**
 	 * Used to resolve the
 	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
 	 * of values.
 	 */
 	var objectToString$2 = objectProto$5.toString;
-
+	
 	/**
 	 * The base implementation of `_.isTypedArray` without Node.js optimizations.
 	 *
@@ -984,7 +993,7 @@
 	  return isObjectLike(value) &&
 	    isLength(value.length) && !!typedArrayTags[objectToString$2.call(value)];
 	}
-
+	
 	/**
 	 * The base implementation of `_.unary` without support for storing metadata.
 	 *
@@ -997,29 +1006,29 @@
 	    return func(value);
 	  };
 	}
-
+	
 	/** Detect free variable `exports`. */
 	var freeExports$1 = typeof exports == 'object' && exports && !exports.nodeType && exports;
-
+	
 	/** Detect free variable `module`. */
 	var freeModule$1 = freeExports$1 && typeof module == 'object' && module && !module.nodeType && module;
-
+	
 	/** Detect the popular CommonJS extension `module.exports`. */
 	var moduleExports$1 = freeModule$1 && freeModule$1.exports === freeExports$1;
-
+	
 	/** Detect free variable `process` from Node.js. */
 	var freeProcess = moduleExports$1 && freeGlobal.process;
-
+	
 	/** Used to access faster Node.js helpers. */
 	var nodeUtil = (function() {
 	  try {
 	    return freeProcess && freeProcess.binding('util');
 	  } catch (e) {}
 	}());
-
+	
 	/* Node.js helper references. */
 	var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
-
+	
 	/**
 	 * Checks if `value` is classified as a typed array.
 	 *
@@ -1038,13 +1047,13 @@
 	 * // => false
 	 */
 	var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
-
+	
 	/** Used for built-in method references. */
 	var objectProto$2 = Object.prototype;
-
+	
 	/** Used to check objects for own properties. */
 	var hasOwnProperty$1 = objectProto$2.hasOwnProperty;
-
+	
 	/**
 	 * Creates an array of the enumerable property names of the array-like `value`.
 	 *
@@ -1061,7 +1070,7 @@
 	      skipIndexes = isArr || isArg || isBuff || isType,
 	      result = skipIndexes ? baseTimes(value.length, String) : [],
 	      length = result.length;
-
+	
 	  for (var key in value) {
 	    if ((inherited || hasOwnProperty$1.call(value, key)) &&
 	        !(skipIndexes && (
@@ -1079,10 +1088,10 @@
 	  }
 	  return result;
 	}
-
+	
 	/** Used for built-in method references. */
 	var objectProto$7 = Object.prototype;
-
+	
 	/**
 	 * Checks if `value` is likely a prototype object.
 	 *
@@ -1093,10 +1102,10 @@
 	function isPrototype(value) {
 	  var Ctor = value && value.constructor,
 	      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$7;
-
+	
 	  return value === proto;
 	}
-
+	
 	/**
 	 * Creates a unary function that invokes `func` with its argument transformed.
 	 *
@@ -1110,16 +1119,16 @@
 	    return func(transform(arg));
 	  };
 	}
-
+	
 	/* Built-in method references for those with the same name as other `lodash` methods. */
 	var nativeKeys = overArg(Object.keys, Object);
-
+	
 	/** Used for built-in method references. */
 	var objectProto$6 = Object.prototype;
-
+	
 	/** Used to check objects for own properties. */
 	var hasOwnProperty$3 = objectProto$6.hasOwnProperty;
-
+	
 	/**
 	 * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
 	 *
@@ -1139,7 +1148,7 @@
 	  }
 	  return result;
 	}
-
+	
 	/**
 	 * Creates an array of the own enumerable property names of `object`.
 	 *
@@ -1171,7 +1180,7 @@
 	function keys(object) {
 	  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
 	}
-
+	
 	function createArrayIterator(coll) {
 	    var i = -1;
 	    var len = coll.length;
@@ -1179,7 +1188,7 @@
 	        return ++i < len ? { value: coll[i], key: i } : null;
 	    };
 	}
-
+	
 	function createES2015Iterator(iterator) {
 	    var i = -1;
 	    return function next() {
@@ -1189,7 +1198,7 @@
 	        return { value: item.value, key: i };
 	    };
 	}
-
+	
 	function createObjectIterator(obj) {
 	    var okeys = keys(obj);
 	    var i = -1;
@@ -1199,16 +1208,16 @@
 	        return i < len ? { value: obj[key], key: key } : null;
 	    };
 	}
-
+	
 	function iterator(coll) {
 	    if (isArrayLike(coll)) {
 	        return createArrayIterator(coll);
 	    }
-
+	
 	    var iterator = getIterator(coll);
 	    return iterator ? createES2015Iterator(iterator) : createObjectIterator(coll);
 	}
-
+	
 	function onlyOnce(fn) {
 	    return function () {
 	        if (fn === null) throw new Error("Callback was already called.");
@@ -1217,11 +1226,11 @@
 	        callFn.apply(this, arguments);
 	    };
 	}
-
+	
 	// A temporary value used to identify if the loop should be broken.
 	// See #1064, #1293
 	var breakLoop = {};
-
+	
 	function _eachOfLimit(limit) {
 	    return function (obj, iteratee, callback) {
 	        callback = once(callback || noop);
@@ -1231,7 +1240,7 @@
 	        var nextElem = iterator(obj);
 	        var done = false;
 	        var running = 0;
-
+	
 	        function iterateeCallback(err, value) {
 	            running -= 1;
 	            if (err) {
@@ -1244,7 +1253,7 @@
 	                replenish();
 	            }
 	        }
-
+	
 	        function replenish() {
 	            while (running < limit && !done) {
 	                var elem = nextElem();
@@ -1259,11 +1268,11 @@
 	                iteratee(elem.value, elem.key, onlyOnce(iterateeCallback));
 	            }
 	        }
-
+	
 	        replenish();
 	    };
 	}
-
+	
 	/**
 	 * The same as [`eachOf`]{@link module:Collections.eachOf} but runs a maximum of `limit` async operations at a
 	 * time.
@@ -1289,13 +1298,13 @@
 	function eachOfLimit(coll, limit, iteratee, callback) {
 	  _eachOfLimit(limit)(coll, iteratee, callback);
 	}
-
+	
 	function doLimit(fn, limit) {
 	    return function (iterable, iteratee, callback) {
 	        return fn(iterable, limit, iteratee, callback);
 	    };
 	}
-
+	
 	// eachOf implementation optimized for array-likes
 	function eachOfArrayLike(coll, iteratee, callback) {
 	    callback = once(callback || noop);
@@ -1305,7 +1314,7 @@
 	    if (length === 0) {
 	        callback(null);
 	    }
-
+	
 	    function iteratorCallback(err) {
 	        if (err) {
 	            callback(err);
@@ -1313,15 +1322,15 @@
 	            callback(null);
 	        }
 	    }
-
+	
 	    for (; index < length; index++) {
 	        iteratee(coll[index], index, onlyOnce(iteratorCallback));
 	    }
 	}
-
+	
 	// a generic version of eachOf which can handle array, object, and iterator cases.
 	var eachOfGeneric = doLimit(eachOfLimit, Infinity);
-
+	
 	/**
 	 * Like [`each`]{@link module:Collections.each}, except that it passes the key (or index) as the second argument
 	 * to the iteratee.
@@ -1367,19 +1376,19 @@
 	    var eachOfImplementation = isArrayLike(coll) ? eachOfArrayLike : eachOfGeneric;
 	    eachOfImplementation(coll, iteratee, callback);
 	};
-
+	
 	function doParallel(fn) {
 	    return function (obj, iteratee, callback) {
 	        return fn(eachOf, obj, iteratee, callback);
 	    };
 	}
-
+	
 	function _asyncMap(eachfn, arr, iteratee, callback) {
 	    callback = once(callback || noop);
 	    arr = arr || [];
 	    var results = [];
 	    var counter = 0;
-
+	
 	    eachfn(arr, function (value, _, callback) {
 	        var index = counter++;
 	        iteratee(value, function (err, v) {
@@ -1390,7 +1399,7 @@
 	        callback(err, results);
 	    });
 	}
-
+	
 	/**
 	 * Produces a new collection of values by mapping each value in `coll` through
 	 * the `iteratee` function. The `iteratee` is called with an item from `coll`
@@ -1428,7 +1437,7 @@
 	 * });
 	 */
 	var map = doParallel(_asyncMap);
-
+	
 	/**
 	 * Applies the provided arguments to each function in the array, calling
 	 * `callback` after all functions have completed. If you only provide the first
@@ -1463,13 +1472,13 @@
 	 * );
 	 */
 	var applyEach = applyEach$1(map);
-
+	
 	function doParallelLimit(fn) {
 	    return function (obj, limit, iteratee, callback) {
 	        return fn(_eachOfLimit(limit), obj, iteratee, callback);
 	    };
 	}
-
+	
 	/**
 	 * The same as [`map`]{@link module:Collections.map} but runs a maximum of `limit` async operations at a time.
 	 *
@@ -1490,7 +1499,7 @@
 	 * transformed items from the `coll`. Invoked with (err, results).
 	 */
 	var mapLimit = doParallelLimit(_asyncMap);
-
+	
 	/**
 	 * The same as [`map`]{@link module:Collections.map} but runs only a single async operation at a time.
 	 *
@@ -1510,7 +1519,7 @@
 	 * transformed items from the `coll`. Invoked with (err, results).
 	 */
 	var mapSeries = doLimit(mapLimit, 1);
-
+	
 	/**
 	 * The same as [`applyEach`]{@link module:ControlFlow.applyEach} but runs only a single async operation at a time.
 	 *
@@ -1531,7 +1540,7 @@
 	 * function call.
 	 */
 	var applyEachSeries = applyEach$1(mapSeries);
-
+	
 	/**
 	 * Creates a continuation function with some arguments already applied.
 	 *
@@ -1581,7 +1590,7 @@
 	        return fn.apply(null, args.concat(callArgs));
 	    });
 	});
-
+	
 	/**
 	 * Take a sync function and make it async, passing its return value to a
 	 * callback. This is useful for plugging sync functions into a waterfall,
@@ -1657,7 +1666,7 @@
 	        }
 	    });
 	}
-
+	
 	/**
 	 * A specialized version of `_.forEach` for arrays without support for
 	 * iteratee shorthands.
@@ -1670,7 +1679,7 @@
 	function arrayEach(array, iteratee) {
 	  var index = -1,
 	      length = array ? array.length : 0;
-
+	
 	  while (++index < length) {
 	    if (iteratee(array[index], index, array) === false) {
 	      break;
@@ -1678,7 +1687,7 @@
 	  }
 	  return array;
 	}
-
+	
 	/**
 	 * Creates a base function for methods like `_.forIn` and `_.forOwn`.
 	 *
@@ -1692,7 +1701,7 @@
 	        iterable = Object(object),
 	        props = keysFunc(object),
 	        length = props.length;
-
+	
 	    while (length--) {
 	      var key = props[fromRight ? length : ++index];
 	      if (iteratee(iterable[key], key, iterable) === false) {
@@ -1702,7 +1711,7 @@
 	    return object;
 	  };
 	}
-
+	
 	/**
 	 * The base implementation of `baseForOwn` which iterates over `object`
 	 * properties returned by `keysFunc` and invokes `iteratee` for each property.
@@ -1715,7 +1724,7 @@
 	 * @returns {Object} Returns `object`.
 	 */
 	var baseFor = createBaseFor();
-
+	
 	/**
 	 * The base implementation of `_.forOwn` without support for iteratee shorthands.
 	 *
@@ -1727,7 +1736,7 @@
 	function baseForOwn(object, iteratee) {
 	  return object && baseFor(object, iteratee, keys);
 	}
-
+	
 	/**
 	 * The base implementation of `_.findIndex` and `_.findLastIndex` without
 	 * support for iteratee shorthands.
@@ -1742,7 +1751,7 @@
 	function baseFindIndex(array, predicate, fromIndex, fromRight) {
 	  var length = array.length,
 	      index = fromIndex + (fromRight ? 1 : -1);
-
+	
 	  while ((fromRight ? index-- : ++index < length)) {
 	    if (predicate(array[index], index, array)) {
 	      return index;
@@ -1750,7 +1759,7 @@
 	  }
 	  return -1;
 	}
-
+	
 	/**
 	 * The base implementation of `_.isNaN` without support for number objects.
 	 *
@@ -1761,7 +1770,7 @@
 	function baseIsNaN(value) {
 	  return value !== value;
 	}
-
+	
 	/**
 	 * A specialized version of `_.indexOf` which performs strict equality
 	 * comparisons of values, i.e. `===`.
@@ -1775,7 +1784,7 @@
 	function strictIndexOf(array, value, fromIndex) {
 	  var index = fromIndex - 1,
 	      length = array.length;
-
+	
 	  while (++index < length) {
 	    if (array[index] === value) {
 	      return index;
@@ -1783,7 +1792,7 @@
 	  }
 	  return -1;
 	}
-
+	
 	/**
 	 * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
 	 *
@@ -1798,7 +1807,7 @@
 	    ? strictIndexOf(array, value, fromIndex)
 	    : baseFindIndex(array, baseIsNaN, fromIndex);
 	}
-
+	
 	/**
 	 * Determines the best order for running the functions in `tasks`, based on
 	 * their requirements. Each function can optionally depend on other functions
@@ -1893,20 +1902,20 @@
 	    if (!concurrency) {
 	        concurrency = numTasks;
 	    }
-
+	
 	    var results = {};
 	    var runningTasks = 0;
 	    var hasError = false;
-
+	
 	    var listeners = {};
-
+	
 	    var readyTasks = [];
-
+	
 	    // for cycle detection:
 	    var readyToCheck = []; // tasks that have been identified as reachable
 	    // without the possibility of returning to an ancestor task
 	    var uncheckedDependencies = {};
-
+	
 	    baseForOwn(tasks, function (task, key) {
 	        if (!isArray(task)) {
 	            // no dependencies
@@ -1914,7 +1923,7 @@
 	            readyToCheck.push(key);
 	            return;
 	        }
-
+	
 	        var dependencies = task.slice(0, task.length - 1);
 	        var remainingDependencies = dependencies.length;
 	        if (remainingDependencies === 0) {
@@ -1923,7 +1932,7 @@
 	            return;
 	        }
 	        uncheckedDependencies[key] = remainingDependencies;
-
+	
 	        arrayEach(dependencies, function (dependencyName) {
 	            if (!tasks[dependencyName]) {
 	                throw new Error('async.auto task `' + key + '` has a non-existent dependency in ' + dependencies.join(', '));
@@ -1936,16 +1945,16 @@
 	            });
 	        });
 	    });
-
+	
 	    checkForDeadlocks();
 	    processQueue();
-
+	
 	    function enqueueTask(key, task) {
 	        readyTasks.push(function () {
 	            runTask(key, task);
 	        });
 	    }
-
+	
 	    function processQueue() {
 	        if (readyTasks.length === 0 && runningTasks === 0) {
 	            return callback(null, results);
@@ -1955,16 +1964,16 @@
 	            run();
 	        }
 	    }
-
+	
 	    function addListener(taskName, fn) {
 	        var taskListeners = listeners[taskName];
 	        if (!taskListeners) {
 	            taskListeners = listeners[taskName] = [];
 	        }
-
+	
 	        taskListeners.push(fn);
 	    }
-
+	
 	    function taskComplete(taskName) {
 	        var taskListeners = listeners[taskName] || [];
 	        arrayEach(taskListeners, function (fn) {
@@ -1972,10 +1981,10 @@
 	        });
 	        processQueue();
 	    }
-
+	
 	    function runTask(key, task) {
 	        if (hasError) return;
-
+	
 	        var taskCallback = onlyOnce(baseRest$1(function (err, args) {
 	            runningTasks--;
 	            if (args.length <= 1) {
@@ -1989,14 +1998,14 @@
 	                safeResults[key] = args;
 	                hasError = true;
 	                listeners = [];
-
+	
 	                callback(err, safeResults);
 	            } else {
 	                results[key] = args;
 	                taskComplete(key);
 	            }
 	        }));
-
+	
 	        runningTasks++;
 	        var taskFn = task[task.length - 1];
 	        if (task.length > 1) {
@@ -2005,7 +2014,7 @@
 	            taskFn(taskCallback);
 	        }
 	    }
-
+	
 	    function checkForDeadlocks() {
 	        // Kahn's algorithm
 	        // https://en.wikipedia.org/wiki/Topological_sorting#Kahn.27s_algorithm
@@ -2021,12 +2030,12 @@
 	                }
 	            });
 	        }
-
+	
 	        if (counter !== numTasks) {
 	            throw new Error('async.auto cannot execute tasks due to a recursive dependency');
 	        }
 	    }
-
+	
 	    function getDependents(taskName) {
 	        var result = [];
 	        baseForOwn(tasks, function (task, key) {
@@ -2037,7 +2046,7 @@
 	        return result;
 	    }
 	};
-
+	
 	/**
 	 * A specialized version of `_.map` for arrays without support for iteratee
 	 * shorthands.
@@ -2051,13 +2060,13 @@
 	  var index = -1,
 	      length = array ? array.length : 0,
 	      result = Array(length);
-
+	
 	  while (++index < length) {
 	    result[index] = iteratee(array[index], index, array);
 	  }
 	  return result;
 	}
-
+	
 	/**
 	 * Copies the values of `source` to `array`.
 	 *
@@ -2069,30 +2078,30 @@
 	function copyArray(source, array) {
 	  var index = -1,
 	      length = source.length;
-
+	
 	  array || (array = Array(length));
 	  while (++index < length) {
 	    array[index] = source[index];
 	  }
 	  return array;
 	}
-
+	
 	/** Built-in value references. */
 	var Symbol$1 = root.Symbol;
-
+	
 	/** `Object#toString` result references. */
 	var symbolTag = '[object Symbol]';
-
+	
 	/** Used for built-in method references. */
 	var objectProto$8 = Object.prototype;
-
+	
 	/**
 	 * Used to resolve the
 	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
 	 * of values.
 	 */
 	var objectToString$3 = objectProto$8.toString;
-
+	
 	/**
 	 * Checks if `value` is classified as a `Symbol` primitive or object.
 	 *
@@ -2114,14 +2123,14 @@
 	  return typeof value == 'symbol' ||
 	    (isObjectLike(value) && objectToString$3.call(value) == symbolTag);
 	}
-
+	
 	/** Used as references for various `Number` constants. */
 	var INFINITY = 1 / 0;
-
+	
 	/** Used to convert symbols to primitives and strings. */
 	var symbolProto = Symbol$1 ? Symbol$1.prototype : undefined;
 	var symbolToString = symbolProto ? symbolProto.toString : undefined;
-
+	
 	/**
 	 * The base implementation of `_.toString` which doesn't convert nullish
 	 * values to empty strings.
@@ -2145,7 +2154,7 @@
 	  var result = (value + '');
 	  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
 	}
-
+	
 	/**
 	 * The base implementation of `_.slice` without an iteratee call guard.
 	 *
@@ -2158,7 +2167,7 @@
 	function baseSlice(array, start, end) {
 	  var index = -1,
 	      length = array.length;
-
+	
 	  if (start < 0) {
 	    start = -start > length ? 0 : (length + start);
 	  }
@@ -2168,14 +2177,14 @@
 	  }
 	  length = start > end ? 0 : ((end - start) >>> 0);
 	  start >>>= 0;
-
+	
 	  var result = Array(length);
 	  while (++index < length) {
 	    result[index] = array[index + start];
 	  }
 	  return result;
 	}
-
+	
 	/**
 	 * Casts `array` to a slice if it's needed.
 	 *
@@ -2190,7 +2199,7 @@
 	  end = end === undefined ? length : end;
 	  return (!start && end >= length) ? array : baseSlice(array, start, end);
 	}
-
+	
 	/**
 	 * Used by `_.trim` and `_.trimEnd` to get the index of the last string symbol
 	 * that is not found in the character symbols.
@@ -2202,11 +2211,11 @@
 	 */
 	function charsEndIndex(strSymbols, chrSymbols) {
 	  var index = strSymbols.length;
-
+	
 	  while (index-- && baseIndexOf(chrSymbols, strSymbols[index], 0) > -1) {}
 	  return index;
 	}
-
+	
 	/**
 	 * Used by `_.trim` and `_.trimStart` to get the index of the first string symbol
 	 * that is not found in the character symbols.
@@ -2219,11 +2228,11 @@
 	function charsStartIndex(strSymbols, chrSymbols) {
 	  var index = -1,
 	      length = strSymbols.length;
-
+	
 	  while (++index < length && baseIndexOf(chrSymbols, strSymbols[index], 0) > -1) {}
 	  return index;
 	}
-
+	
 	/**
 	 * Converts an ASCII `string` to an array.
 	 *
@@ -2234,19 +2243,19 @@
 	function asciiToArray(string) {
 	  return string.split('');
 	}
-
+	
 	/** Used to compose unicode character classes. */
 	var rsAstralRange = '\\ud800-\\udfff';
 	var rsComboMarksRange = '\\u0300-\\u036f\\ufe20-\\ufe23';
 	var rsComboSymbolsRange = '\\u20d0-\\u20f0';
 	var rsVarRange = '\\ufe0e\\ufe0f';
-
+	
 	/** Used to compose unicode capture groups. */
 	var rsZWJ = '\\u200d';
-
+	
 	/** Used to detect strings with [zero-width joiners or code points from the astral planes](http://eev.ee/blog/2015/09/12/dark-corners-of-unicode/). */
 	var reHasUnicode = RegExp('[' + rsZWJ + rsAstralRange  + rsComboMarksRange + rsComboSymbolsRange + rsVarRange + ']');
-
+	
 	/**
 	 * Checks if `string` contains Unicode symbols.
 	 *
@@ -2257,13 +2266,13 @@
 	function hasUnicode(string) {
 	  return reHasUnicode.test(string);
 	}
-
+	
 	/** Used to compose unicode character classes. */
 	var rsAstralRange$1 = '\\ud800-\\udfff';
 	var rsComboMarksRange$1 = '\\u0300-\\u036f\\ufe20-\\ufe23';
 	var rsComboSymbolsRange$1 = '\\u20d0-\\u20f0';
 	var rsVarRange$1 = '\\ufe0e\\ufe0f';
-
+	
 	/** Used to compose unicode capture groups. */
 	var rsAstral = '[' + rsAstralRange$1 + ']';
 	var rsCombo = '[' + rsComboMarksRange$1 + rsComboSymbolsRange$1 + ']';
@@ -2273,17 +2282,17 @@
 	var rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}';
 	var rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]';
 	var rsZWJ$1 = '\\u200d';
-
+	
 	/** Used to compose unicode regexes. */
 	var reOptMod = rsModifier + '?';
 	var rsOptVar = '[' + rsVarRange$1 + ']?';
 	var rsOptJoin = '(?:' + rsZWJ$1 + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*';
 	var rsSeq = rsOptVar + reOptMod + rsOptJoin;
 	var rsSymbol = '(?:' + [rsNonAstral + rsCombo + '?', rsCombo, rsRegional, rsSurrPair, rsAstral].join('|') + ')';
-
+	
 	/** Used to match [string symbols](https://mathiasbynens.be/notes/javascript-unicode). */
 	var reUnicode = RegExp(rsFitz + '(?=' + rsFitz + ')|' + rsSymbol + rsSeq, 'g');
-
+	
 	/**
 	 * Converts a Unicode `string` to an array.
 	 *
@@ -2294,7 +2303,7 @@
 	function unicodeToArray(string) {
 	  return string.match(reUnicode) || [];
 	}
-
+	
 	/**
 	 * Converts `string` to an array.
 	 *
@@ -2307,7 +2316,7 @@
 	    ? unicodeToArray(string)
 	    : asciiToArray(string);
 	}
-
+	
 	/**
 	 * Converts `value` to a string. An empty string is returned for `null`
 	 * and `undefined` values. The sign of `-0` is preserved.
@@ -2332,10 +2341,10 @@
 	function toString(value) {
 	  return value == null ? '' : baseToString(value);
 	}
-
+	
 	/** Used to match leading and trailing whitespace. */
 	var reTrim = /^\s+|\s+$/g;
-
+	
 	/**
 	 * Removes leading and trailing whitespace or specified characters from `string`.
 	 *
@@ -2370,15 +2379,15 @@
 	      chrSymbols = stringToArray(chars),
 	      start = charsStartIndex(strSymbols, chrSymbols),
 	      end = charsEndIndex(strSymbols, chrSymbols) + 1;
-
+	
 	  return castSlice(strSymbols, start, end).join('');
 	}
-
+	
 	var FN_ARGS = /^(function)?\s*[^\(]*\(\s*([^\)]*)\)/m;
 	var FN_ARG_SPLIT = /,/;
 	var FN_ARG = /(=.+)?(\s*)$/;
 	var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
-
+	
 	function parseParams(func) {
 	    func = func.toString().replace(STRIP_COMMENTS, '');
 	    func = func.match(FN_ARGS)[2].replace(' ', '');
@@ -2388,7 +2397,7 @@
 	    });
 	    return func;
 	}
-
+	
 	/**
 	 * A dependency-injected version of the [async.auto]{@link module:ControlFlow.auto} function. Dependent
 	 * tasks are specified as parameters to the function, after the usual callback
@@ -2473,14 +2482,14 @@
 	 */
 	function autoInject(tasks, callback) {
 	    var newTasks = {};
-
+	
 	    baseForOwn(tasks, function (taskFn, key) {
 	        var params;
-
+	
 	        if (isArray(taskFn)) {
 	            params = copyArray(taskFn);
 	            taskFn = params.pop();
-
+	
 	            newTasks[key] = params.concat(params.length > 0 ? newTask : taskFn);
 	        } else if (taskFn.length === 1) {
 	            // no dependencies, use the function as-is
@@ -2490,12 +2499,12 @@
 	            if (taskFn.length === 0 && params.length === 0) {
 	                throw new Error("autoInject task functions require explicit parameters.");
 	            }
-
+	
 	            params.pop();
-
+	
 	            newTasks[key] = params.concat(newTask);
 	        }
-
+	
 	        function newTask(results, taskCb) {
 	            var newArgs = arrayMap(params, function (name) {
 	                return results[name];
@@ -2504,17 +2513,17 @@
 	            taskFn.apply(null, newArgs);
 	        }
 	    });
-
+	
 	    auto(newTasks, callback);
 	}
-
+	
 	var hasSetImmediate = typeof setImmediate === 'function' && setImmediate;
 	var hasNextTick = typeof process === 'object' && typeof process.nextTick === 'function';
-
+	
 	function fallback(fn) {
 	    setTimeout(fn, 0);
 	}
-
+	
 	function wrap(defer) {
 	    return baseRest$1(function (fn, args) {
 	        defer(function () {
@@ -2522,9 +2531,9 @@
 	        });
 	    });
 	}
-
+	
 	var _defer;
-
+	
 	if (hasSetImmediate) {
 	    _defer = setImmediate;
 	} else if (hasNextTick) {
@@ -2532,9 +2541,9 @@
 	} else {
 	    _defer = fallback;
 	}
-
+	
 	var setImmediate$1 = wrap(_defer);
-
+	
 	// Simple doubly linked list (https://en.wikipedia.org/wiki/Doubly_linked_list) implementation
 	// used for queues. This implementation assumes that the node provided by the user can be modified
 	// to adjust the next and last properties. We implement only the minimal functionality
@@ -2543,23 +2552,23 @@
 	    this.head = this.tail = null;
 	    this.length = 0;
 	}
-
+	
 	function setInitial(dll, node) {
 	    dll.length = 1;
 	    dll.head = dll.tail = node;
 	}
-
+	
 	DLL.prototype.removeLink = function (node) {
 	    if (node.prev) node.prev.next = node.next;else this.head = node.next;
 	    if (node.next) node.next.prev = node.prev;else this.tail = node.prev;
-
+	
 	    node.prev = node.next = null;
 	    this.length -= 1;
 	    return node;
 	};
-
+	
 	DLL.prototype.empty = DLL;
-
+	
 	DLL.prototype.insertAfter = function (node, newNode) {
 	    newNode.prev = node;
 	    newNode.next = node.next;
@@ -2567,7 +2576,7 @@
 	    node.next = newNode;
 	    this.length += 1;
 	};
-
+	
 	DLL.prototype.insertBefore = function (node, newNode) {
 	    newNode.prev = node.prev;
 	    newNode.next = node;
@@ -2575,30 +2584,30 @@
 	    node.prev = newNode;
 	    this.length += 1;
 	};
-
+	
 	DLL.prototype.unshift = function (node) {
 	    if (this.head) this.insertBefore(this.head, node);else setInitial(this, node);
 	};
-
+	
 	DLL.prototype.push = function (node) {
 	    if (this.tail) this.insertAfter(this.tail, node);else setInitial(this, node);
 	};
-
+	
 	DLL.prototype.shift = function () {
 	    return this.head && this.removeLink(this.head);
 	};
-
+	
 	DLL.prototype.pop = function () {
 	    return this.tail && this.removeLink(this.tail);
 	};
-
+	
 	function queue(worker, concurrency, payload) {
 	    if (concurrency == null) {
 	        concurrency = 1;
 	    } else if (concurrency === 0) {
 	        throw new Error('Concurrency must not be zero');
 	    }
-
+	
 	    function _insert(data, insertAtFront, callback) {
 	        if (callback != null && typeof callback !== 'function') {
 	            throw new Error('task callback must be a function');
@@ -2613,13 +2622,13 @@
 	                q.drain();
 	            });
 	        }
-
+	
 	        for (var i = 0, l = data.length; i < l; i++) {
 	            var item = {
 	                data: data[i],
 	                callback: callback || noop
 	            };
-
+	
 	            if (insertAtFront) {
 	                q._tasks.unshift(item);
 	            } else {
@@ -2628,36 +2637,36 @@
 	        }
 	        setImmediate$1(q.process);
 	    }
-
+	
 	    function _next(tasks) {
 	        return baseRest$1(function (args) {
 	            workers -= 1;
-
+	
 	            for (var i = 0, l = tasks.length; i < l; i++) {
 	                var task = tasks[i];
 	                var index = baseIndexOf(workersList, task, 0);
 	                if (index >= 0) {
 	                    workersList.splice(index);
 	                }
-
+	
 	                task.callback.apply(task, args);
-
+	
 	                if (args[0] != null) {
 	                    q.error(args[0], task.data);
 	                }
 	            }
-
+	
 	            if (workers <= q.concurrency - q.buffer) {
 	                q.unsaturated();
 	            }
-
+	
 	            if (q.idle()) {
 	                q.drain();
 	            }
 	            q.process();
 	        });
 	    }
-
+	
 	    var workers = 0;
 	    var workersList = [];
 	    var q = {
@@ -2693,17 +2702,17 @@
 	                    tasks.push(node);
 	                    data.push(node.data);
 	                }
-
+	
 	                if (q._tasks.length === 0) {
 	                    q.empty();
 	                }
 	                workers += 1;
 	                workersList.push(tasks[0]);
-
+	
 	                if (workers === q.concurrency) {
 	                    q.saturated();
 	                }
-
+	
 	                var cb = onlyOnce(_next(tasks));
 	                worker(data, cb);
 	            }
@@ -2738,7 +2747,7 @@
 	    };
 	    return q;
 	}
-
+	
 	/**
 	 * A cargo of tasks for the worker function to complete. Cargo inherits all of
 	 * the same methods and event callbacks as [`queue`]{@link module:ControlFlow.queue}.
@@ -2768,7 +2777,7 @@
 	 * @property {Function} kill - a function that removes the `drain` callback and
 	 * empties remaining tasks from the queue forcing it to go idle. Invoke like `cargo.kill()`.
 	 */
-
+	
 	/**
 	 * Creates a `cargo` object with the specified payload. Tasks added to the
 	 * cargo will be processed altogether (up to the `payload` limit). If the
@@ -2820,7 +2829,7 @@
 	function cargo(worker, payload) {
 	  return queue(worker, 1, payload);
 	}
-
+	
 	/**
 	 * The same as [`eachOf`]{@link module:Collections.eachOf} but runs only a single async operation at a time.
 	 *
@@ -2841,7 +2850,7 @@
 	 * functions have finished, or an error occurs. Invoked with (err).
 	 */
 	var eachOfSeries = doLimit(eachOfLimit, 1);
-
+	
 	/**
 	 * Reduces `coll` into a single value using an async `iteratee` to return each
 	 * successive step. `memo` is the initial state of the reduction. This function
@@ -2893,7 +2902,7 @@
 	        callback(err, memo);
 	    });
 	}
-
+	
 	/**
 	 * Version of the compose function that is more natural to read. Each function
 	 * consumes the return value of the previous function. It is the equivalent of
@@ -2935,14 +2944,14 @@
 	var seq$1 = baseRest$1(function seq(functions) {
 	    return baseRest$1(function (args) {
 	        var that = this;
-
+	
 	        var cb = args[args.length - 1];
 	        if (typeof cb == 'function') {
 	            args.pop();
 	        } else {
 	            cb = noop;
 	        }
-
+	
 	        reduce(functions, args, function (newargs, fn, cb) {
 	            fn.apply(that, newargs.concat([baseRest$1(function (err, nextargs) {
 	                cb(err, nextargs);
@@ -2952,7 +2961,7 @@
 	        });
 	    });
 	});
-
+	
 	/**
 	 * Creates a function which is a composition of the passed asynchronous
 	 * functions. Each function consumes the return value of the function that
@@ -2991,7 +3000,7 @@
 	var compose = baseRest$1(function (args) {
 	  return seq$1.apply(null, args.reverse());
 	});
-
+	
 	function concat$1(eachfn, arr, fn, callback) {
 	    var result = [];
 	    eachfn(arr, function (x, index, cb) {
@@ -3003,7 +3012,7 @@
 	        callback(err, result);
 	    });
 	}
-
+	
 	/**
 	 * Applies `iteratee` to each item in `coll`, concatenating the results. Returns
 	 * the concatenated list. The `iteratee`s are called in parallel, and the
@@ -3032,13 +3041,13 @@
 	 * });
 	 */
 	var concat = doParallel(concat$1);
-
+	
 	function doSeries(fn) {
 	    return function (obj, iteratee, callback) {
 	        return fn(eachOfSeries, obj, iteratee, callback);
 	    };
 	}
-
+	
 	/**
 	 * The same as [`concat`]{@link module:Collections.concat} but runs only a single async operation at a time.
 	 *
@@ -3059,7 +3068,7 @@
 	 * (err, results).
 	 */
 	var concatSeries = doSeries(concat$1);
-
+	
 	/**
 	 * Returns a function that when called, calls-back with the values provided.
 	 * Useful as the first function in a [`waterfall`]{@link module:ControlFlow.waterfall}, or for plugging values in to
@@ -3108,7 +3117,7 @@
 	        return callback.apply(this, args);
 	    });
 	});
-
+	
 	function _createTester(eachfn, check, getResult) {
 	    return function (arr, limit, iteratee, cb) {
 	        function done() {
@@ -3141,18 +3150,18 @@
 	        }
 	    };
 	}
-
+	
 	function _findGetResult(v, x) {
 	    return x;
 	}
-
+	
 	/**
 	 * Returns the first value in `coll` that passes an async truth test. The
 	 * `iteratee` is applied in parallel, meaning the first iteratee to return
 	 * `true` will fire the detect `callback` with that result. That means the
 	 * result might not be the first item in the original `coll` (in terms of order)
 	 * that passes the test.
-
+	
 	 * If order within the original `coll` is important, then look at
 	 * [`detectSeries`]{@link module:Collections.detectSeries}.
 	 *
@@ -3182,7 +3191,7 @@
 	 * });
 	 */
 	var detect = _createTester(eachOf, identity, _findGetResult);
-
+	
 	/**
 	 * The same as [`detect`]{@link module:Collections.detect} but runs a maximum of `limit` async operations at a
 	 * time.
@@ -3206,7 +3215,7 @@
 	 * (err, result).
 	 */
 	var detectLimit = _createTester(eachOfLimit, identity, _findGetResult);
-
+	
 	/**
 	 * The same as [`detect`]{@link module:Collections.detect} but runs only a single async operation at a time.
 	 *
@@ -3228,7 +3237,7 @@
 	 * (err, result).
 	 */
 	var detectSeries = _createTester(eachOfSeries, identity, _findGetResult);
-
+	
 	function consoleFunc(name) {
 	    return baseRest$1(function (fn, args) {
 	        fn.apply(null, args.concat([baseRest$1(function (err, args) {
@@ -3246,7 +3255,7 @@
 	        })]));
 	    });
 	}
-
+	
 	/**
 	 * Logs the result of an `async` function to the `console` using `console.dir`
 	 * to display the properties of the resulting object. Only works in Node.js or
@@ -3276,7 +3285,7 @@
 	 * {hello: 'world'}
 	 */
 	var dir = consoleFunc('dir');
-
+	
 	/**
 	 * The post-check version of [`during`]{@link module:ControlFlow.during}. To reflect the difference in
 	 * the order of operations, the arguments `test` and `fn` are switched.
@@ -3300,22 +3309,22 @@
 	 */
 	function doDuring(fn, test, callback) {
 	    callback = onlyOnce(callback || noop);
-
+	
 	    var next = baseRest$1(function (err, args) {
 	        if (err) return callback(err);
 	        args.push(check);
 	        test.apply(this, args);
 	    });
-
+	
 	    function check(err, truth) {
 	        if (err) return callback(err);
 	        if (!truth) return callback(null);
 	        fn(next);
 	    }
-
+	
 	    check(null, true);
 	}
-
+	
 	/**
 	 * The post-check version of [`whilst`]{@link module:ControlFlow.whilst}. To reflect the difference in
 	 * the order of operations, the arguments `test` and `iteratee` are switched.
@@ -3348,7 +3357,7 @@
 	    });
 	    iteratee(next);
 	}
-
+	
 	/**
 	 * Like ['doWhilst']{@link module:ControlFlow.doWhilst}, except the `test` is inverted. Note the
 	 * argument ordering differs from `until`.
@@ -3374,7 +3383,7 @@
 	        return !test.apply(this, arguments);
 	    }, callback);
 	}
-
+	
 	/**
 	 * Like [`whilst`]{@link module:ControlFlow.whilst}, except the `test` is an asynchronous function that
 	 * is passed a callback in the form of `function (err, truth)`. If error is
@@ -3414,27 +3423,27 @@
 	 */
 	function during(test, fn, callback) {
 	    callback = onlyOnce(callback || noop);
-
+	
 	    function next(err) {
 	        if (err) return callback(err);
 	        test(check);
 	    }
-
+	
 	    function check(err, truth) {
 	        if (err) return callback(err);
 	        if (!truth) return callback(null);
 	        fn(next);
 	    }
-
+	
 	    test(check);
 	}
-
+	
 	function _withoutIndex(iteratee) {
 	    return function (value, index, callback) {
 	        return iteratee(value, callback);
 	    };
 	}
-
+	
 	/**
 	 * Applies the function `iteratee` to each item in `coll`, in parallel.
 	 * The `iteratee` is called with an item from the list, and a callback for when
@@ -3497,7 +3506,7 @@
 	function eachLimit(coll, iteratee, callback) {
 	  eachOf(coll, _withoutIndex(iteratee), callback);
 	}
-
+	
 	/**
 	 * The same as [`each`]{@link module:Collections.each} but runs a maximum of `limit` async operations at a time.
 	 *
@@ -3522,7 +3531,7 @@
 	function eachLimit$1(coll, limit, iteratee, callback) {
 	  _eachOfLimit(limit)(coll, _withoutIndex(iteratee), callback);
 	}
-
+	
 	/**
 	 * The same as [`each`]{@link module:Collections.each} but runs only a single async operation at a time.
 	 *
@@ -3544,7 +3553,7 @@
 	 * `iteratee` functions have finished, or an error occurs. Invoked with (err).
 	 */
 	var eachSeries = doLimit(eachLimit$1, 1);
-
+	
 	/**
 	 * Wrap an async function and ensure it calls its callback on a later tick of
 	 * the event loop.  If the function already calls its callback on a next tick,
@@ -3596,11 +3605,11 @@
 	        sync = false;
 	    });
 	}
-
+	
 	function notId(v) {
 	    return !v;
 	}
-
+	
 	/**
 	 * Returns `true` if every element in `coll` satisfies an async test. If any
 	 * iteratee call returns `false`, the main `callback` is immediately called.
@@ -3630,7 +3639,7 @@
 	 * });
 	 */
 	var every = _createTester(eachOf, notId, notId);
-
+	
 	/**
 	 * The same as [`every`]{@link module:Collections.every} but runs a maximum of `limit` async operations at a time.
 	 *
@@ -3652,7 +3661,7 @@
 	 * depending on the values of the async tests. Invoked with (err, result).
 	 */
 	var everyLimit = _createTester(eachOfLimit, notId, notId);
-
+	
 	/**
 	 * The same as [`every`]{@link module:Collections.every} but runs only a single async operation at a time.
 	 *
@@ -3673,7 +3682,7 @@
 	 * depending on the values of the async tests. Invoked with (err, result).
 	 */
 	var everySeries = doLimit(everyLimit, 1);
-
+	
 	/**
 	 * The base implementation of `_.property` without support for deep paths.
 	 *
@@ -3686,7 +3695,7 @@
 	    return object == null ? undefined : object[key];
 	  };
 	}
-
+	
 	function _filter(eachfn, arr, iteratee, callback) {
 	    callback = once(callback || noop);
 	    var results = [];
@@ -3711,7 +3720,7 @@
 	        }
 	    });
 	}
-
+	
 	/**
 	 * Returns a new array of all the values in `coll` which pass an async truth
 	 * test. This operation is performed in parallel, but the results array will be
@@ -3740,7 +3749,7 @@
 	 * });
 	 */
 	var filter = doParallel(_filter);
-
+	
 	/**
 	 * The same as [`filter`]{@link module:Collections.filter} but runs a maximum of `limit` async operations at a
 	 * time.
@@ -3761,7 +3770,7 @@
 	 * `iteratee` functions have finished. Invoked with (err, results).
 	 */
 	var filterLimit = doParallelLimit(_filter);
-
+	
 	/**
 	 * The same as [`filter`]{@link module:Collections.filter} but runs only a single async operation at a time.
 	 *
@@ -3780,11 +3789,11 @@
 	 * `iteratee` functions have finished. Invoked with (err, results)
 	 */
 	var filterSeries = doLimit(filterLimit, 1);
-
+	
 	/**
 	 * Calls the asynchronous function `fn` with a callback parameter that allows it
 	 * to call itself again, in series, indefinitely.
-
+	
 	 * If an error is passed to the
 	 * callback then `errback` is called with the error, and execution stops,
 	 * otherwise it will never be called.
@@ -3813,14 +3822,14 @@
 	function forever(fn, errback) {
 	    var done = onlyOnce(errback || noop);
 	    var task = ensureAsync(fn);
-
+	
 	    function next(err) {
 	        if (err) return done(err);
 	        task(next);
 	    }
 	    next();
 	}
-
+	
 	/**
 	 * Logs the result of an `async` function to the `console`. Only works in
 	 * Node.js or in browsers that support `console.log` and `console.error` (such
@@ -3849,7 +3858,7 @@
 	 * 'hello world'
 	 */
 	var log = consoleFunc('log');
-
+	
 	/**
 	 * The same as [`mapValues`]{@link module:Collections.mapValues} but runs a maximum of `limit` async operations at a
 	 * time.
@@ -3884,7 +3893,7 @@
 	        callback(err, newObj);
 	    });
 	}
-
+	
 	/**
 	 * A relative of [`map`]{@link module:Collections.map}, designed for use with objects.
 	 *
@@ -3929,9 +3938,9 @@
 	 *     // }
 	 * });
 	 */
-
+	
 	var mapValues = doLimit(mapValuesLimit, Infinity);
-
+	
 	/**
 	 * The same as [`mapValues`]{@link module:Collections.mapValues} but runs only a single async operation at a time.
 	 *
@@ -3952,11 +3961,11 @@
 	 * Invoked with (err, result).
 	 */
 	var mapValuesSeries = doLimit(mapValuesLimit, 1);
-
+	
 	function has(obj, key) {
 	    return key in obj;
 	}
-
+	
 	/**
 	 * Caches the results of an `async` function. When creating a hash to store
 	 * function results against, the callback is omitted from the hash and an
@@ -4022,7 +4031,7 @@
 	    memoized.unmemoized = fn;
 	    return memoized;
 	}
-
+	
 	/**
 	 * Calls `callback` on a later loop around the event loop. In Node.js this just
 	 * calls `setImmediate`.  In the browser it will use `setImmediate` if
@@ -4055,7 +4064,7 @@
 	 * }, 1, 2, 3);
 	 */
 	var _defer$1;
-
+	
 	if (hasNextTick) {
 	    _defer$1 = process.nextTick;
 	} else if (hasSetImmediate) {
@@ -4063,13 +4072,13 @@
 	} else {
 	    _defer$1 = fallback;
 	}
-
+	
 	var nextTick = wrap(_defer$1);
-
+	
 	function _parallel(eachfn, tasks, callback) {
 	    callback = callback || noop;
 	    var results = isArrayLike(tasks) ? [] : {};
-
+	
 	    eachfn(tasks, function (task, key, callback) {
 	        task(baseRest$1(function (err, args) {
 	            if (args.length <= 1) {
@@ -4082,7 +4091,7 @@
 	        callback(err, results);
 	    });
 	}
-
+	
 	/**
 	 * Run the `tasks` collection of functions in parallel, without waiting until
 	 * the previous function has completed. If any of the functions pass an error to
@@ -4152,7 +4161,7 @@
 	function parallelLimit(tasks, callback) {
 	  _parallel(eachOf, tasks, callback);
 	}
-
+	
 	/**
 	 * The same as [`parallel`]{@link module:ControlFlow.parallel} but runs a maximum of `limit` async operations at a
 	 * time.
@@ -4176,7 +4185,7 @@
 	function parallelLimit$1(tasks, limit, callback) {
 	  _parallel(_eachOfLimit(limit), tasks, callback);
 	}
-
+	
 	/**
 	 * A queue of tasks for the worker function to complete.
 	 * @typedef {Object} QueueObject
@@ -4223,7 +4232,7 @@
 	 * @property {Function} kill - a function that removes the `drain` callback and
 	 * empties remaining tasks from the queue forcing it to go idle. Invoke with `queue.kill()`.
 	 */
-
+	
 	/**
 	 * Creates a `queue` object with the specified `concurrency`. Tasks added to the
 	 * `queue` are processed in parallel (up to the `concurrency` limit). If all
@@ -4282,7 +4291,7 @@
 	    worker(items[0], cb);
 	  }, concurrency, 1);
 	};
-
+	
 	/**
 	 * The same as [async.queue]{@link module:ControlFlow.queue} only tasks are assigned a priority and
 	 * completed in ascending priority order.
@@ -4310,7 +4319,7 @@
 	var priorityQueue = function (worker, concurrency) {
 	    // Start with a normal queue
 	    var q = queue$1(worker, concurrency);
-
+	
 	    // Override push to accept second parameter representing priority
 	    q.push = function (data, priority, callback) {
 	        if (callback == null) callback = noop;
@@ -4327,20 +4336,20 @@
 	                q.drain();
 	            });
 	        }
-
+	
 	        priority = priority || 0;
 	        var nextNode = q._tasks.head;
 	        while (nextNode && priority >= nextNode.priority) {
 	            nextNode = nextNode.next;
 	        }
-
+	
 	        for (var i = 0, l = data.length; i < l; i++) {
 	            var item = {
 	                data: data[i],
 	                priority: priority,
 	                callback: callback
 	            };
-
+	
 	            if (nextNode) {
 	                q._tasks.insertBefore(nextNode, item);
 	            } else {
@@ -4349,13 +4358,13 @@
 	        }
 	        setImmediate$1(q.process);
 	    };
-
+	
 	    // Remove unshift function
 	    delete q.unshift;
-
+	
 	    return q;
 	};
-
+	
 	/**
 	 * Runs the `tasks` array of functions in parallel, without waiting until the
 	 * previous function has completed. Once any of the `tasks` complete or pass an
@@ -4401,9 +4410,9 @@
 	        tasks[i](callback);
 	    }
 	}
-
+	
 	var slice = Array.prototype.slice;
-
+	
 	/**
 	 * Same as [`reduce`]{@link module:Collections.reduce}, only operates on `array` in reverse order.
 	 *
@@ -4430,7 +4439,7 @@
 	  var reversed = slice.call(array).reverse();
 	  reduce(reversed, memo, iteratee, callback);
 	}
-
+	
 	/**
 	 * Wraps the function in another function that always returns data even when it
 	 * errors.
@@ -4489,11 +4498,11 @@
 	                });
 	            }
 	        }));
-
+	
 	        return fn.apply(this, args);
 	    });
 	}
-
+	
 	function reject$1(eachfn, arr, iteratee, callback) {
 	    _filter(eachfn, arr, function (value, cb) {
 	        iteratee(value, function (err, v) {
@@ -4505,7 +4514,7 @@
 	        });
 	    }, callback);
 	}
-
+	
 	/**
 	 * The opposite of [`filter`]{@link module:Collections.filter}. Removes values that pass an `async` truth test.
 	 *
@@ -4533,7 +4542,7 @@
 	 * });
 	 */
 	var reject = doParallel(reject$1);
-
+	
 	/**
 	 * A helper function that wraps an array or an object of functions with reflect.
 	 *
@@ -4612,7 +4621,7 @@
 	    }
 	    return results;
 	}
-
+	
 	/**
 	 * The same as [`reject`]{@link module:Collections.reject} but runs a maximum of `limit` async operations at a
 	 * time.
@@ -4632,7 +4641,7 @@
 	 * `iteratee` functions have finished. Invoked with (err, results).
 	 */
 	var rejectLimit = doParallelLimit(reject$1);
-
+	
 	/**
 	 * The same as [`reject`]{@link module:Collections.reject} but runs only a single async operation at a time.
 	 *
@@ -4650,7 +4659,7 @@
 	 * `iteratee` functions have finished. Invoked with (err, results).
 	 */
 	var rejectSeries = doLimit(rejectLimit, 1);
-
+	
 	/**
 	 * Attempts to get a successful response from `task` no more than `times` times
 	 * before returning an error. If the task is successful, the `callback` will be
@@ -4740,18 +4749,18 @@
 	function retry(opts, task, callback) {
 	    var DEFAULT_TIMES = 5;
 	    var DEFAULT_INTERVAL = 0;
-
+	
 	    var options = {
 	        times: DEFAULT_TIMES,
 	        intervalFunc: constant(DEFAULT_INTERVAL)
 	    };
-
+	
 	    function parseTimes(acc, t) {
 	        if (typeof t === 'object') {
 	            acc.times = +t.times || DEFAULT_TIMES;
-
+	
 	            acc.intervalFunc = typeof t.interval === 'function' ? t.interval : constant(+t.interval || DEFAULT_INTERVAL);
-
+	
 	            acc.errorFilter = t.errorFilter;
 	        } else if (typeof t === 'number' || typeof t === 'string') {
 	            acc.times = +t || DEFAULT_TIMES;
@@ -4759,7 +4768,7 @@
 	            throw new Error("Invalid arguments for async.retry");
 	        }
 	    }
-
+	
 	    if (arguments.length < 3 && typeof opts === 'function') {
 	        callback = task || noop;
 	        task = opts;
@@ -4767,11 +4776,11 @@
 	        parseTimes(options, opts);
 	        callback = callback || noop;
 	    }
-
+	
 	    if (typeof task !== 'function') {
 	        throw new Error("Invalid arguments for async.retry");
 	    }
-
+	
 	    var attempt = 1;
 	    function retryAttempt() {
 	        task(function (err) {
@@ -4782,10 +4791,10 @@
 	            }
 	        });
 	    }
-
+	
 	    retryAttempt();
 	}
-
+	
 	/**
 	 * A close relative of [`retry`]{@link module:ControlFlow.retry}.  This method wraps a task and makes it
 	 * retryable, rather than immediately calling it with retries.
@@ -4819,11 +4828,11 @@
 	        function taskFn(cb) {
 	            task.apply(null, args.concat([cb]));
 	        }
-
+	
 	        if (opts) retry(opts, taskFn, callback);else retry(taskFn, callback);
 	    });
 	};
-
+	
 	/**
 	 * Run the functions in the `tasks` collection in series, each one running once
 	 * the previous function has completed. If any functions in the series pass an
@@ -4891,7 +4900,7 @@
 	function series(tasks, callback) {
 	  _parallel(eachOfSeries, tasks, callback);
 	}
-
+	
 	/**
 	 * Returns `true` if at least one element in the `coll` satisfies an async test.
 	 * If any iteratee call returns `true`, the main `callback` is immediately
@@ -4923,7 +4932,7 @@
 	 * });
 	 */
 	var some = _createTester(eachOf, Boolean, identity);
-
+	
 	/**
 	 * The same as [`some`]{@link module:Collections.some} but runs a maximum of `limit` async operations at a time.
 	 *
@@ -4946,7 +4955,7 @@
 	 * tests. Invoked with (err, result).
 	 */
 	var someLimit = _createTester(eachOfLimit, Boolean, identity);
-
+	
 	/**
 	 * The same as [`some`]{@link module:Collections.some} but runs only a single async operation at a time.
 	 *
@@ -4968,7 +4977,7 @@
 	 * tests. Invoked with (err, result).
 	 */
 	var someSeries = doLimit(someLimit, 1);
-
+	
 	/**
 	 * Sorts a list by the results of running each `coll` value through an async
 	 * `iteratee`.
@@ -5025,14 +5034,14 @@
 	        if (err) return callback(err);
 	        callback(null, arrayMap(results.sort(comparator), baseProperty('value')));
 	    });
-
+	
 	    function comparator(left, right) {
 	        var a = left.criteria,
 	            b = right.criteria;
 	        return a < b ? -1 : a > b ? 1 : 0;
 	    }
 	}
-
+	
 	/**
 	 * Sets a time limit on an asynchronous function. If the function does not call
 	 * its callback within the specified milliseconds, it will be called with a
@@ -5078,14 +5087,14 @@
 	function timeout(asyncFn, milliseconds, info) {
 	    var originalCallback, timer;
 	    var timedOut = false;
-
+	
 	    function injectedCallback() {
 	        if (!timedOut) {
 	            originalCallback.apply(null, arguments);
 	            clearTimeout(timer);
 	        }
 	    }
-
+	
 	    function timeoutCallback() {
 	        var name = asyncFn.name || 'anonymous';
 	        var error = new Error('Callback function "' + name + '" timed out.');
@@ -5096,7 +5105,7 @@
 	        timedOut = true;
 	        originalCallback(error);
 	    }
-
+	
 	    return initialParams(function (args, origCallback) {
 	        originalCallback = origCallback;
 	        // setup timer and call original function
@@ -5104,11 +5113,11 @@
 	        asyncFn.apply(null, args.concat(injectedCallback));
 	    });
 	}
-
+	
 	/* Built-in method references for those with the same name as other `lodash` methods. */
 	var nativeCeil = Math.ceil;
 	var nativeMax$1 = Math.max;
-
+	
 	/**
 	 * The base implementation of `_.range` and `_.rangeRight` which doesn't
 	 * coerce arguments.
@@ -5124,14 +5133,14 @@
 	  var index = -1,
 	      length = nativeMax$1(nativeCeil((end - start) / (step || 1)), 0),
 	      result = Array(length);
-
+	
 	  while (length--) {
 	    result[fromRight ? length : ++index] = start;
 	    start += step;
 	  }
 	  return result;
 	}
-
+	
 	/**
 	 * The same as [times]{@link module:ControlFlow.times} but runs a maximum of `limit` async operations at a
 	 * time.
@@ -5151,7 +5160,7 @@
 	function timeLimit(count, limit, iteratee, callback) {
 	  mapLimit(baseRange(0, count, 1), limit, iteratee, callback);
 	}
-
+	
 	/**
 	 * Calls the `iteratee` function `n` times, and accumulates results in the same
 	 * manner you would use with [map]{@link module:Collections.map}.
@@ -5185,7 +5194,7 @@
 	 * });
 	 */
 	var times = doLimit(timeLimit, Infinity);
-
+	
 	/**
 	 * The same as [times]{@link module:ControlFlow.times} but runs only a single async operation at a time.
 	 *
@@ -5201,7 +5210,7 @@
 	 * @param {Function} callback - see {@link module:Collections.map}.
 	 */
 	var timesSeries = doLimit(timeLimit, 1);
-
+	
 	/**
 	 * A relative of `reduce`.  Takes an Object or Array, and iterates over each
 	 * element in series, each step potentially mutating an `accumulator` value.
@@ -5254,14 +5263,14 @@
 	        accumulator = isArray(coll) ? [] : {};
 	    }
 	    callback = once(callback || noop);
-
+	
 	    eachOf(coll, function (v, k, cb) {
 	        iteratee(accumulator, v, k, cb);
 	    }, function (err) {
 	        callback(err, accumulator);
 	    });
 	}
-
+	
 	/**
 	 * Undoes a [memoize]{@link module:Utils.memoize}d function, reverting it to the original,
 	 * unmemoized form. Handy for testing.
@@ -5280,7 +5289,7 @@
 	        return (fn.unmemoized || fn).apply(null, arguments);
 	    };
 	}
-
+	
 	/**
 	 * Repeatedly call `iteratee`, while `test` returns `true`. Calls `callback` when
 	 * stopped, or an error occurs.
@@ -5326,7 +5335,7 @@
 	    });
 	    iteratee(next);
 	}
-
+	
 	/**
 	 * Repeatedly call `fn` until `test` returns `true`. Calls `callback` when
 	 * stopped, or an error occurs. `callback` will be passed an error and any
@@ -5355,7 +5364,7 @@
 	        return !test.apply(this, arguments);
 	    }, fn, callback);
 	}
-
+	
 	/**
 	 * Runs the `tasks` array of functions in series, each passing their results to
 	 * the next in the array. However, if any of the `tasks` pass an error to their
@@ -5418,28 +5427,28 @@
 	    if (!isArray(tasks)) return callback(new Error('First argument to waterfall must be an array of functions'));
 	    if (!tasks.length) return callback();
 	    var taskIndex = 0;
-
+	
 	    function nextTask(args) {
 	        if (taskIndex === tasks.length) {
 	            return callback.apply(null, [null].concat(args));
 	        }
-
+	
 	        var taskCallback = onlyOnce(baseRest$1(function (err, args) {
 	            if (err) {
 	                return callback.apply(null, [err].concat(args));
 	            }
 	            nextTask(args);
 	        }));
-
+	
 	        args.push(taskCallback);
-
+	
 	        var task = tasks[taskIndex++];
 	        task.apply(null, args);
 	    }
-
+	
 	    nextTask([]);
 	};
-
+	
 	/**
 	 * Async is a utility module which provides straight-forward, powerful functions
 	 * for working with asynchronous JavaScript. Although originally designed for
@@ -5447,18 +5456,18 @@
 	 * `npm install --save async`, it can also be used directly in the browser.
 	 * @module async
 	 */
-
+	
 	/**
 	 * A collection of `async` functions for manipulating collections, such as
 	 * arrays and objects.
 	 * @module Collections
 	 */
-
+	
 	/**
 	 * A collection of `async` functions for controlling the flow through a script.
 	 * @module ControlFlow
 	 */
-
+	
 	/**
 	 * A collection of `async` utility functions.
 	 * @module Utils
@@ -5536,7 +5545,7 @@
 	  until: until,
 	  waterfall: waterfall,
 	  whilst: whilst,
-
+	
 	  // aliases
 	  all: every,
 	  any: some,
@@ -5554,7 +5563,7 @@
 	  selectSeries: filterSeries,
 	  wrapSync: asyncify
 	};
-
+	
 	exports['default'] = index;
 	exports.applyEach = applyEach;
 	exports.applyEachSeries = applyEachSeries;
@@ -5650,15 +5659,18 @@
 	exports.selectLimit = filterLimit;
 	exports.selectSeries = filterSeries;
 	exports.wrapSync = asyncify;
-
+	
 	Object.defineProperty(exports, '__esModule', { value: true });
-
+	
 	})));
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(3)(module), __webpack_require__(4).setImmediate, __webpack_require__(5)))
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(/*! ./../../webpack/buildin/module.js */ 3)(module), __webpack_require__(/*! (webpack)/~/node-libs-browser/~/timers-browserify/main.js */ 4).setImmediate, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 5)))
 
 /***/ },
 /* 3 */
+/*!***********************************!*\
+  !*** (webpack)/buildin/module.js ***!
+  \***********************************/
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -5675,16 +5687,19 @@
 
 /***/ },
 /* 4 */
+/*!*****************************************************************!*\
+  !*** (webpack)/~/node-libs-browser/~/timers-browserify/main.js ***!
+  \*****************************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(5).nextTick;
+	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(/*! process/browser.js */ 5).nextTick;
 	var apply = Function.prototype.apply;
 	var slice = Array.prototype.slice;
 	var immediateIds = {};
 	var nextImmediateId = 0;
-
+	
 	// DOM APIs, for completeness
-
+	
 	exports.setTimeout = function() {
 	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
 	};
@@ -5693,7 +5708,7 @@
 	};
 	exports.clearTimeout =
 	exports.clearInterval = function(timeout) { timeout.close(); };
-
+	
 	function Timeout(id, clearFn) {
 	  this._id = id;
 	  this._clearFn = clearFn;
@@ -5702,21 +5717,21 @@
 	Timeout.prototype.close = function() {
 	  this._clearFn.call(window, this._id);
 	};
-
+	
 	// Does not start the time, just sets up the members needed.
 	exports.enroll = function(item, msecs) {
 	  clearTimeout(item._idleTimeoutId);
 	  item._idleTimeout = msecs;
 	};
-
+	
 	exports.unenroll = function(item) {
 	  clearTimeout(item._idleTimeoutId);
 	  item._idleTimeout = -1;
 	};
-
+	
 	exports._unrefActive = exports.active = function(item) {
 	  clearTimeout(item._idleTimeoutId);
-
+	
 	  var msecs = item._idleTimeout;
 	  if (msecs >= 0) {
 	    item._idleTimeoutId = setTimeout(function onTimeout() {
@@ -5725,14 +5740,14 @@
 	    }, msecs);
 	  }
 	};
-
+	
 	// That's not how node.js implements it but the exposed api is the same.
 	exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
 	  var id = nextImmediateId++;
 	  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
-
+	
 	  immediateIds[id] = true;
-
+	
 	  nextTick(function onNextTick() {
 	    if (immediateIds[id]) {
 	      // fn.call() is faster so we optimize for the common use-case
@@ -5746,30 +5761,33 @@
 	      exports.clearImmediate(id);
 	    }
 	  });
-
+	
 	  return id;
 	};
-
+	
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4).setImmediate, __webpack_require__(4).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/timers-browserify/main.js */ 4).setImmediate, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/timers-browserify/main.js */ 4).clearImmediate))
 
 /***/ },
 /* 5 */
+/*!**********************************************************!*\
+  !*** (webpack)/~/node-libs-browser/~/process/browser.js ***!
+  \**********************************************************/
 /***/ function(module, exports) {
 
 	// shim for using process in browser
 	var process = module.exports = {};
-
+	
 	// cached from whatever global is present so that test runners that stub it
 	// don't break things.  But we need to wrap it in a try catch in case it is
 	// wrapped in strict mode code which doesn't define any globals.  It's inside a
 	// function because try/catches deoptimize in certain engines.
-
+	
 	var cachedSetTimeout;
 	var cachedClearTimeout;
-
+	
 	function defaultSetTimout() {
 	    throw new Error('setTimeout has not been defined');
 	}
@@ -5818,8 +5836,8 @@
 	            return cachedSetTimeout.call(this, fun, 0);
 	        }
 	    }
-
-
+	
+	
 	}
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
@@ -5844,15 +5862,15 @@
 	            return cachedClearTimeout.call(this, marker);
 	        }
 	    }
-
-
-
+	
+	
+	
 	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
 	var queueIndex = -1;
-
+	
 	function cleanUpNextTick() {
 	    if (!draining || !currentQueue) {
 	        return;
@@ -5867,14 +5885,14 @@
 	        drainQueue();
 	    }
 	}
-
+	
 	function drainQueue() {
 	    if (draining) {
 	        return;
 	    }
 	    var timeout = runTimeout(cleanUpNextTick);
 	    draining = true;
-
+	
 	    var len = queue.length;
 	    while(len) {
 	        currentQueue = queue;
@@ -5891,7 +5909,7 @@
 	    draining = false;
 	    runClearTimeout(timeout);
 	}
-
+	
 	process.nextTick = function (fun) {
 	    var args = new Array(arguments.length - 1);
 	    if (arguments.length > 1) {
@@ -5904,7 +5922,7 @@
 	        runTimeout(drainQueue);
 	    }
 	};
-
+	
 	// v8 likes predictible objects
 	function Item(fun, array) {
 	    this.fun = fun;
@@ -5919,9 +5937,9 @@
 	process.argv = [];
 	process.version = ''; // empty string to avoid regexp issues
 	process.versions = {};
-
+	
 	function noop() {}
-
+	
 	process.on = noop;
 	process.addListener = noop;
 	process.once = noop;
@@ -5929,11 +5947,11 @@
 	process.removeListener = noop;
 	process.removeAllListeners = noop;
 	process.emit = noop;
-
+	
 	process.binding = function (name) {
 	    throw new Error('process.binding is not supported');
 	};
-
+	
 	process.cwd = function () { return '/' };
 	process.chdir = function (dir) {
 	    throw new Error('process.chdir is not supported');
@@ -5943,10 +5961,13 @@
 
 /***/ },
 /* 6 */
+/*!*****************************!*\
+  !*** ./assets/js/config.js ***!
+  \*****************************/
 /***/ function(module, exports) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
@@ -5961,17 +5982,20 @@
 
 /***/ },
 /* 7 */
+/*!****************************!*\
+  !*** ./assets/js/slide.js ***!
+  \****************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 	exports.showSlide = showSlide;
-
-	var _config = __webpack_require__(6);
-
+	
+	var _config = __webpack_require__(/*! ./config */ 6);
+	
 	function showSlide(country, city) {
 	  var modal = $('[data-remodal-id=modal]').remodal();
 	  modal.open();
@@ -5997,3 +6021,4 @@
 
 /***/ }
 /******/ ]);
+//# sourceMappingURL=bundle.js.map

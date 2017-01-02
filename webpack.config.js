@@ -10,5 +10,6 @@ module.exports = {
             { test: path.join(__dirname, 'assets/js'),
               loader: 'babel-loader' }
         ]
-    }
+    },
+    devtool: 'source-map'
 };
